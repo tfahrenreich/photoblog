@@ -1,0 +1,19 @@
+{
+  "name": "photoblog",
+  "version": "1.0.0",
+  "description": "Photo blog framework",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tfahrenreich/photoblog.git"
+  },
+  "author": "Tim Fahrenreich",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tfahrenreich/photoblog/issues"
+  },
+  "homepage": "https://github.com/tfahrenreich/photoblog#readme"
+}
