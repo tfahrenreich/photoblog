@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/tfahrenreich/photoblog/issues"
   },
-  "homepage": "https://github.com/tfahrenreich/photoblog#readme"
+  "homepage": "https://github.com/tfahrenreich/photoblog#readme",
+  "dependencies": {
+    "express": "^4.13.4",
+    "jade": "^1.11.0"
+  }
 }
