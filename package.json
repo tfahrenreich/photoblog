@@ -18,6 +18,7 @@
   "homepage": "https://github.com/tfahrenreich/photoblog#readme",
   "dependencies": {
     "express": "^4.13.4",
-    "jade": "^1.11.0"
+    "jade": "^1.11.0",
+    "mongoose": "^4.4.12"
   }
 }

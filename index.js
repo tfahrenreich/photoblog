@@ -5,24 +5,29 @@
 global.__base = __dirname + '/';
 
 var express = require('express');
+var mongoose = require('mongoose');
+
+var api = require('./routes/api');
+var hey = require('./routes/hey');
 
 var app = express();
-var port = 2368;
+var db = mongoose.connection;
+
+mongoose.connect('mongodb://localhost/pb');
+app.use('/api', api);
+app.use('/hey', hey);
 
 //View Engine
-app.set('views', __base + '/tpl');
+app.set('views', __base + '/views');
 app.set('view engine', 'jade');
-app.use('/assets', express.static(__base + '/public'));
+app.use('/assets', express.static(__base + '/assets'));
 
-
-//app.engine('jade', require('jade').__express);
+app.engine('jade', require('jade').__express);
 
 app.get("/", function(req, res){
-    res.send('hello world');
+    res.render("index");
 });
 
-app.use(express.static(__base + '/public'));
-
-app.listen(port, function(){
-    console.log('ok');
+app.listen(2368 , function(){
+    console.log('5ok');
 });
