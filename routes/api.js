@@ -3,8 +3,9 @@
  */
 
 var express = require('express');
-var router = express.Router();
 var mongoose = require('mongoose');
+var bcrypt = require('bcrypt-nodejs');
+var router = express.Router();
 
 var Page = require('../models/page.js');
 var adminUser = require('../models/admin-users.js');
@@ -83,5 +84,62 @@ router.post('/pages/update', function(request, response) {
     response.send("Page updated");
 });
 
+router.post('/add-user', function(request, response) {
+    var salt, hash, password;
+    password = request.body.password;
+    salt = bcrypt.genSaltSync(10);
+    hash = bcrypt.hashSync(password, salt);
+
+    var AdminUser = new adminUser({
+        username: request.body.username,
+        password: hash
+    });
+    AdminUser.save(function(err) {
+        if (!err) {
+            return response.send('Admin User successfully created');
+
+        } else {
+            return response.send(err);
+        }
+    });
+});
+
+router.post('/login', function(request, response) {
+    var username = request.body.username;
+    var password = request.body.password;
+
+    adminUser.findOne({
+        username: username
+    }, function(err, data) {
+        if (err | data === null) {
+            return response.status(401).send("User Doesn't exist");
+        } else {
+            var usr = data;
+
+            if (username == usr.username && bcrypt.compareSync(password, usr.password)) {
+
+                request.session.regenerate(function() {
+                    request.session.user = username;
+                    return response.send(username);
+
+                });
+            } else {
+                return response.status(401).send("Bad Username or Password");
+            }
+        }
+    });
+});
+
+router.get('/logout', function(request, response) {
+    request.session.destroy(function() {
+        return response.send(401, 'User logged out');
+    });
+});
+
+function sessionCheck(request,response,next){
+
+    if(request.session.user) next();
+    else response.send(401,'authorization failed');
+}
 
 module.exports = router;
