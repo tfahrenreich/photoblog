@@ -4,13 +4,12 @@
 
 global.__base = __dirname + '/';
 
-var mongoose = require('mongoose');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
 var express = require('express');
+var mongoose = require('mongoose');
 var MongoStore = require('connect-mongo')(session);
-
 
 var api = require('./routes/api');
 var hey = require('./routes/hey');

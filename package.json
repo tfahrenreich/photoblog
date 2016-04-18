@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/tfahrenreich/photoblog#readme",
   "dependencies": {
+    "angular": "^1.5.5",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.0",
     "connect-mongo": "^1.1.0",
@@ -24,6 +25,7 @@
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "jade": "^1.11.0",
-    "mongoose": "^4.4.12"
+    "mongoose": "^4.4.12",
+    "requirejs": "^2.2.0"
   }
 }

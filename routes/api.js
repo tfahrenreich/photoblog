@@ -132,14 +132,14 @@ router.post('/login', function(request, response) {
 
 router.get('/logout', function(request, response) {
     request.session.destroy(function() {
-        return response.send(401, 'User logged out');
+        return response.status(401).send('User logged out');
     });
 });
 
 function sessionCheck(request,response,next){
 
     if(request.session.user) next();
-    else response.send(401,'authorization failed');
+    else response.status(401).send('authorization failed');
 }
 
 module.exports = router;
