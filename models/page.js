@@ -5,7 +5,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var Page = new Schema({
+var PageSchema = new Schema({
     title: String,
     url: {
         type: String,
@@ -16,6 +16,6 @@ var Page = new Schema({
     date: Date
 });
 
-var Page = mongoose.model('Page', Page);
+var Page = mongoose.model('Page', PageSchema);
 
 module.exports = Page;
