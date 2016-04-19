@@ -4,10 +4,15 @@
 
 var express = require('express');
 var mongoose = require('mongoose');
+
+var multer  = require('multer')({dest: 'uploads/'}),
+    imageUpload = multer.single('photo');
+
 var bcrypt = require('bcrypt-nodejs');
 var router = express.Router();
 
 var Page = require('../models/page.js');
+var Photo = require('../models/photo.js');
 var adminUser = require('../models/admin-users.js');
 
 /* User Routes. */
@@ -61,6 +66,22 @@ router.post('/pages/add', function(request, response) {
         if (!err) {
             return response.status(200).send(page);
 
+        } else {
+            return response.status(500).send(err);
+        }
+    });
+});
+
+
+router.post('/photo/add', imageUpload, function(request, response){
+    var photo = new Photo({
+        filename: request.file.filename,
+        date: new Date(Date.now())
+    });
+
+    photo.save(function(err) {
+        if (!err) {
+            return response.status(200).send(photo);
         } else {
             return response.status(500).send(err);
         }
