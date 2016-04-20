@@ -5,7 +5,7 @@
 var express = require('express');
 var mongoose = require('mongoose');
 
-var multer  = require('multer')({dest: 'uploads/'}),
+var multer  = require('multer')({dest: 'assets/images/uploads/'}),
     imageUpload = multer.single('photo');
 
 var bcrypt = require('bcrypt-nodejs');
@@ -71,7 +71,6 @@ router.post('/pages/add', function(request, response) {
         }
     });
 });
-
 
 router.post('/photo/add', imageUpload, function(request, response){
     var photo = new Photo({

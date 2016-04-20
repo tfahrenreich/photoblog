@@ -19,6 +19,7 @@
   "dependencies": {
     "angular": "^1.5.5",
     "angular-resource": "^1.5.5",
+    "angular-route": "^1.5.5",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.0",
     "connect-mongo": "^1.1.0",
@@ -26,6 +27,7 @@
     "express": "^4.13.4",
     "express-session": "^1.13.0",
     "jade": "^1.11.0",
+    "jquery": "^2.2.3",
     "mongoose": "^4.4.12",
     "multer": "^1.1.0",
     "requirejs": "^2.2.0"
