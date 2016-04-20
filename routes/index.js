@@ -3,7 +3,8 @@
  */
 
 var express = require('express'),
-    router = express.Router();
+    router = express.Router(),
+    fs = require('fs');
 
 router.use('/assets', express.static(__base + '/assets'));
 
@@ -15,14 +16,16 @@ router.use('/assets/scripts/libs/angular-route', express.static(__base + '/node_
 router.use('/assets/scripts/libs/jquery', express.static(__base + '/node_modules/jquery/dist'));
 
 /** SERVE UPLOADED IMAGES*/
-router.get('assets/images/uploads/:file', function(request ,response){
+router.get('/assets/images/uploaded/:file', function(request ,response){
     var file = request.params.file,
-        path = __base+'/uploads/'+file;
+        path = __base+'/assets/uploads/'+file,
+        img = fs.readFileSync(path);
 
-    response.sendFile(path);
+    response.writeHead(200, {'Content-Type': 'image/jpg' });
+    response.end(img, 'binary');
 });
 
-router.get("/", function(req, res){
+router.get("*", function(req, res){
     res.render("index");
 });
 

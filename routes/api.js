@@ -4,14 +4,15 @@
 
 var express = require('express');
 var mongoose = require('mongoose');
+var im = require('imagemagick');
+var fs = require('fs');
 
-var multer  = require('multer')({dest: 'assets/images/uploads/'}),
+var multer  = require('multer')({dest: 'assets/uploads/'}),
     imageUpload = multer.single('photo');
 
 var bcrypt = require('bcrypt-nodejs');
 var router = express.Router();
 
-var Page = require('../models/page.js');
 var Photo = require('../models/photo.js');
 var adminUser = require('../models/admin-users.js');
 
@@ -21,89 +22,7 @@ router.get('/', function(req, res) {
     res.send('Welcome to the API zone');
 });
 
-router.get('/pages', function(request, response) {
-
-    return Page.find(function(err, pages) {
-        if (!err) {
-            return response.send(pages);
-        } else {
-            return response.status(500).send(err);
-        }
-    });
-});
-
-router.get('/pages/delete/:id', function(request, response) {
-    var id = request.params.id;
-    Page.remove({
-        _id: id
-    }, function(err) {
-        return console.log(err);
-    });
-    return response.send('Page id- ' + id + ' has been deleted');
-});
-
-router.get('/pages/admin-details/:id', function(request, response) {
-    var id = request.params.id;
-    Page.findOne({
-        _id: id
-    }, function(err, page) {
-        if (err)
-            return console.log(err);
-        return response.send(page);
-    });
-});
-
-router.post('/pages/add', function(request, response) {
-    var page = new Page({
-        title: request.body.title,
-        url: request.body.url,
-        content: request.body.content,
-        menuIndex: request.body.menuIndex,
-        date: new Date(Date.now())
-    });
-
-    page.save(function(err) {
-        if (!err) {
-            return response.status(200).send(page);
-
-        } else {
-            return response.status(500).send(err);
-        }
-    });
-});
-
-router.post('/photo/add', imageUpload, function(request, response){
-    var photo = new Photo({
-        filename: request.file.filename,
-        date: new Date(Date.now())
-    });
-
-    photo.save(function(err) {
-        if (!err) {
-            return response.status(200).send(photo);
-        } else {
-            return response.status(500).send(err);
-        }
-    });
-});
-
-router.post('/pages/update', function(request, response) {
-    var id = request.body._id;
-
-    Page.update({
-        _id: id
-    }, {
-        $set: {
-            title: request.body.title,
-            url: request.body.url,
-            content: request.body.content,
-            menuIndex: request.body.menuIndex,
-            date: new Date(Date.now())
-        }
-    }).exec();
-    response.send("Page updated");
-});
-
+/** USER AUTHENTICATION */
 router.post('/add-user', function(request, response) {
     var salt, hash, password;
     password = request.body.password;
@@ -156,8 +75,65 @@ router.get('/logout', function(request, response) {
     });
 });
 
-function sessionCheck(request,response,next){
+/** PHOTOS */
+router.post('/photo/add', sessionCheck, imageUpload, function(request, response){
+    var photo = new Photo({
+        filename: request.file.filename,
+        date: new Date(Date.now())
+    });
 
+    //TODO: Resize on upload
+
+    photo.save(function(err) {
+        if (!err) {
+            return response.status(200).send(photo);
+        } else {
+            return response.status(500).send(err);
+        }
+    });
+});
+
+
+
+router.get('/photos', function(request, response) {
+
+    return Photo.find(function(err, photos) {
+        if (!err) {
+            return response.send(photos);
+        } else {
+            return response.status(500).send(err);
+        }
+    });
+});
+
+router.post('/photo/update', sessionCheck, function(request, response) {
+    var id = request.body._id;
+
+    Photo.update({
+        _id: id
+    }, {
+        $set: {
+            title: request.body.title,
+            url: request.body.url,
+            content: request.body.content,
+            menuIndex: request.body.menuIndex,
+            date: new Date(Date.now())
+        }
+    }).exec();
+    response.send("photo updated");
+});
+
+router.get('/photo/delete/:id', sessionCheck, function(request, response) {
+    var id = request.params.id;
+    photo.remove({
+        _id: id
+    }, function(err) {
+        return console.log(err);
+    });
+    return response.send('photo id- ' + id + ' has been deleted');
+});
+
+function sessionCheck(request,response,next){
     if(request.session.user) next();
     else response.status(401).send('authorization failed');
 }

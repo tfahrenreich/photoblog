@@ -11,6 +11,6 @@ var PhotoSchema = new Schema({
     date: Date
 });
 
-var Page = mongoose.model('Photo', PhotoSchema);
+var Photo = mongoose.model('Photo', PhotoSchema);
 
-module.exports = Page;
+module.exports = Photo;

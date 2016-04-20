@@ -1,6 +1,4 @@
-/**
- * Created by Tim on 4/19/2016.
- */
+/*global angular*/
 
 require.config({
     baseUrl: 'assets/scripts',
@@ -20,12 +18,12 @@ require.config({
 
 require([
     'app/app',
-    'app/controllers'
-    //'app/services',
+    'angular',
+    'app/controllers',
+    'app/services',
     //'app/directives',
     //'app/filters'
-], function($){
-    //console.log($);
+], function(){
+    angular.bootstrap(document, ['photoBlog']);
+    console.log('angular:photoBlog init\'d');
 });
-
-console.log('sup fam');
