@@ -10,8 +10,11 @@ var PhotoSchema = new Schema({
     filename: String,
     date: Date,
     files: {
+        actual: String,
         original: String,
-        medium: String
+        medium: String,
+        small: String,
+        large: String
     }
 });
 

@@ -1,0 +1,4 @@
+<div ng-repeat="photo in allPhotos">
+    <img src="{{photo.files.small}}"/>
+    <a ng-href="#" ng-click="deletePhoto(photo._id)">Delete</a>
+</div>

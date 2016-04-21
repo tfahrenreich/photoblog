@@ -75,12 +75,15 @@ router.post('/photo/add', sessionCheck, imageUpload, function(request, response)
     var photo = new Photo({
         date: new Date(Date.now()),
         files: {
+            actual: request.file.path,
             original: "/assets/images/uploaded/"+request.file.filename,
-            medium: "/assets/images/uploaded/"+request.file.filename+"_med"
+            medium: "/assets/images/uploaded/"+request.file.filename+"_med",
+            small: "/assets/images/uploaded/"+request.file.filename+"_small",
+            large: "/assets/images/uploaded/"+request.file.filename+"_large"
         }
     });
 
-    photoLab.processImage(request.file.path);
+    photoLab.processImage(photo.files.actual);
 
     photo.save(function(err) {
         if (!err) {
@@ -121,12 +124,12 @@ router.post('/photo/update', sessionCheck, function(request, response) {
 
 router.get('/photo/delete/:id', sessionCheck, function(request, response) {
     var id = request.params.id;
-    photo.remove({
+    Photo.remove({
         _id: id
     }, function(err) {
-        return console.log(err);
+        if(err) return err;
+        return response.send('photo id- ' + id + ' has been deleted');
     });
-    return response.send('photo id- ' + id + ' has been deleted');
 });
 
 function sessionCheck(request,response,next){

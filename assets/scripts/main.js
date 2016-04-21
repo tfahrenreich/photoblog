@@ -7,11 +7,12 @@ require.config({
         app: 'app',
         angular:'libs/angular/angular.min',
         angularRoute:'libs/angular-route/angular-route.min',
+        angularCookies:'libs/angular-cookies/angular-cookies.min',
         angularResource:'libs/angular-resource/angular-resource.min'
      },
      shim: {
          'angularRoute' : ['angular'],
-         'angularAnimate' : ['angular'],
+         'angularCookies' : ['angular'],
          'angularResource' : ['angular']
      }
 });
