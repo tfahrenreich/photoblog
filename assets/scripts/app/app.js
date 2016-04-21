@@ -11,12 +11,12 @@ define([
 ], function(){
     return angular.module("photoBlog", ['ngRoute', 'ngResource'])
         .config(function($routeProvider, $locationProvider) {
-            $routeProvider.when('/view1', {
-                templateUrl: '/assets/angular-views/test.html',
-                controller: 'MyCtrl1'
+            $routeProvider.when('/index', {
+                templateUrl: '/assets/angular-views/index.html',
+                controller: 'Index'
             });
             $routeProvider.otherwise({
-                redirectTo: '/view1'
+                redirectTo: '/index'
             });
 
             $locationProvider.html5Mode(true);

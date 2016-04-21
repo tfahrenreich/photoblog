@@ -3,26 +3,22 @@
  */
 
 var express = require('express');
+var router = express.Router();
 var mongoose = require('mongoose');
-var im = require('imagemagick');
-var fs = require('fs');
-
+var bcrypt = require('bcrypt-nodejs');
 var multer  = require('multer')({dest: 'assets/uploads/'}),
     imageUpload = multer.single('photo');
+var photoLab = require('../modules/photoProcessor.js');
 
-var bcrypt = require('bcrypt-nodejs');
-var router = express.Router();
-
+/** MODELS */
 var Photo = require('../models/photo.js');
 var adminUser = require('../models/admin-users.js');
 
-/* User Routes. */
-
+/** ROUTES */
 router.get('/', function(req, res) {
     res.send('Welcome to the API zone');
 });
 
-/** USER AUTHENTICATION */
 router.post('/add-user', function(request, response) {
     var salt, hash, password;
     password = request.body.password;
@@ -75,14 +71,16 @@ router.get('/logout', function(request, response) {
     });
 });
 
-/** PHOTOS */
 router.post('/photo/add', sessionCheck, imageUpload, function(request, response){
     var photo = new Photo({
-        filename: request.file.filename,
-        date: new Date(Date.now())
+        date: new Date(Date.now()),
+        files: {
+            original: "/assets/images/uploaded/"+request.file.filename,
+            medium: "/assets/images/uploaded/"+request.file.filename+"_med"
+        }
     });
 
-    //TODO: Resize on upload
+    photoLab.processImage(request.file.path);
 
     photo.save(function(err) {
         if (!err) {
@@ -92,8 +90,6 @@ router.post('/photo/add', sessionCheck, imageUpload, function(request, response)
         }
     });
 });
-
-
 
 router.get('/photos', function(request, response) {
 

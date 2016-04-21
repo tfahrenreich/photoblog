@@ -6,7 +6,7 @@ define([
     'app/app'
 ], function(controllers){
     controllers
-        .controller("MyCtrl1", function($scope, $log, photoService){
+        .controller("Index", function($scope, $log, photoService){
 
             photoService.getPhotos().then(
                 function(response) {

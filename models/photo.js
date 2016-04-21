@@ -8,7 +8,11 @@ var Schema = mongoose.Schema;
 var PhotoSchema = new Schema({
     title: String,
     filename: String,
-    date: Date
+    date: Date,
+    files: {
+        original: String,
+        medium: String
+    }
 });
 
 var Photo = mongoose.model('Photo', PhotoSchema);

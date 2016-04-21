@@ -20,7 +20,7 @@ require([
     'app/app',
     'angular',
     'app/controllers',
-    'app/services',
+    'app/services'
     //'app/directives',
     //'app/filters'
 ], function(){
