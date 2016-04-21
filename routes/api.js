@@ -12,6 +12,7 @@ var photoLab = require('../modules/photoProcessor.js');
 
 /** MODELS */
 var Photo = require('../models/photo.js');
+var Site = require('../models/site.js');
 var adminUser = require('../models/admin-users.js');
 
 /** ROUTES */
@@ -19,6 +20,7 @@ router.get('/', function(req, res) {
     res.send('Welcome to the API zone');
 });
 
+/* AUTHENTICATION*/
 router.post('/add-user', function(request, response) {
     var salt, hash, password;
     password = request.body.password;
@@ -71,6 +73,40 @@ router.get('/logout', function(request, response) {
     });
 });
 
+/* SITE MANAGEMENT*/
+router.post('/site/set', sessionCheck, function(request, response){
+    var site = new Site({
+        _id: "siteData",
+        date: new Date(Date.now()),
+        name: request.body.name
+    });
+
+    site.save(function(err){
+        if (!err) return response.status(201).send(site);
+
+        Site.update({
+            _id: site._id
+        }, {
+            $set: {
+                date: new Date(Date.now()),
+                name: site.name
+            }
+        }).exec();
+        response.status(200).send("site updated");
+    })
+});
+
+router.get('/site/info', function(request, response){
+    return Site.findOne({
+        _id : "siteData"
+    }, function(err, data){
+        if (err || data == null) return response.status(500).send('no info set');
+        return response.status(200).send(data);
+    });
+});
+
+
+/* PHOTO MANAGEMENT*/
 router.post('/photo/add', sessionCheck, imageUpload, function(request, response){
     var photo = new Photo({
         date: new Date(Date.now()),
@@ -98,7 +134,7 @@ router.get('/photos', function(request, response) {
 
     return Photo.find(function(err, photos) {
         if (!err) {
-            return response.send(photos);
+            return response.status(200).send(photos);
         } else {
             return response.status(500).send(err);
         }
