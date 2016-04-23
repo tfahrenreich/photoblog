@@ -6,18 +6,13 @@ define([
     'app/app'
 ], function(services) {
     services
-        .factory('authService' , function ($http, $q){
-            function login(credentials) {
-                return $http.post('/api/login', credentials);
-            }
-
-            function logout(){
-                return $http.get('/api/logout');
+        .factory('appData' , function ($http, $q){
+            function getData(){
+                return $http.get('/api/site/info');
             }
 
             return {
-                login : login,
-                logout : logout
+                getData : getData
             };
         })
 
@@ -27,7 +22,22 @@ define([
             }
 
             function deletePhoto(id){
-                return $http.get('/api/photo/delete/' + id)
+                return $http.get('/api/photos/delete/' + id)
+            }
+
+            return {
+                getPhotos : getPhotos,
+                deletePhoto : deletePhoto
+            };
+        })
+
+        .factory('photoService', function ($http, $q){
+            function getPhotos(){
+                return $http.get('/api/photos');
+            }
+
+            function deletePhoto(id){
+                return $http.get('/api/photos/delete/' + id)
             }
 
             return {

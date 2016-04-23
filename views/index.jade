@@ -6,6 +6,6 @@ html
     head
         title PhotoBlog
         base(href="/")
-    body
+    body(ng-controller="AppContainerCtrl")
         script(data-main="/assets/scripts/main.js" , src="/assets/scripts/libs/requirejs/require.js")
         div(ng-view)

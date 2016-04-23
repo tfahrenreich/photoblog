@@ -30,7 +30,7 @@ app.set('view engine', 'jade');
 app.engine('jade', require('jade').__express);
 
 /** ROUTES */
-app.use('/api', require('./routes/api'));
+app.use('/api', require('./routes/api/index'));
 app.use('/', require('./routes/index'));
 
 app.listen(2368 , function(){

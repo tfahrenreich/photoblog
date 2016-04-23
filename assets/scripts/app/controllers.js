@@ -7,15 +7,24 @@ define([
 ], function(controllers){
     controllers
 
+        .controller("AppContainerCtrl", function($scope, $log, appData){
+            appData.getData().then(
+                function(response){
+                    $scope.appData = response.data
+                },
+                function(error){
+                    $log.error(error)
+                })
+        })
+
         .controller("IndexCtrl", function($scope, $log, photoService){
             photoService.getPhotos().then(
                 function(response) {
                     $scope.allPhotos = response.data;
                 },
-                function(err) {
-                    $log.error(err);
+                function(error) {
+                    $log.error(error);
                 });
-
         })
 
         .controller("AdminLoginCtrl", function($scope, $location, $cookies, authService, $log){
@@ -26,12 +35,12 @@ define([
 
             $scope.login = function(credentials) {
                 authService.login(credentials).then(
-                    function(res, err) {
-                        $cookies.loggedInUser = res.data;
+                    function(response) {
+                        $cookies.loggedInUser = response.data;
                         $location.path('/admin/pages');
                     },
-                    function(err) {
-                        $log.log(err);
+                    function(error) {
+                        $log.log(error);
                     });
             };
         })
@@ -41,13 +50,12 @@ define([
                 function(response) {
                     $scope.allPhotos = response.data;
                 },
-                function(err) {
-                    $log.error(err);
+                function(error) {
+                    $log.error(error);
                 });
 
             $scope.deletePhoto = function(id) {
                 photoService.deletePhoto(id);
             };
-
         });
 });

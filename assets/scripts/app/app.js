@@ -11,8 +11,9 @@ define([
     'angularResource'
 ], function(){
     return angular.module("photoBlog", ['ngRoute', 'ngResource', 'ngCookies'])
-
         .config(function($routeProvider, $locationProvider) {
+            //TODO: protected routes
+
             $routeProvider.when('/index', {
                 templateUrl: '/assets/angular-views/template-index.html',
                 controller: 'IndexCtrl'
