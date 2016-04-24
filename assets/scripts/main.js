@@ -5,6 +5,7 @@ require.config({
 
     paths: {
         app: 'app',
+        $:'/assets/scripts/libs/jquery/jquery.min',
         angular:'libs/angular/angular.min',
         angularRoute:'libs/angular-route/angular-route.min',
         angularCookies:'libs/angular-cookies/angular-cookies.min',
@@ -18,11 +19,12 @@ require.config({
 });
 
 require([
+    '$',
     'app/app',
     'angular',
     'app/controllers',
-    'app/services'
-    //'app/directives',
+    'app/services',
+    'app/directives'
     //'app/filters'
 ], function(){
     angular.bootstrap(document, ['photoBlog']);

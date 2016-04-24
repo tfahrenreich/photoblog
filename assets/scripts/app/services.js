@@ -6,7 +6,7 @@ define([
     'app/app'
 ], function(services) {
     services
-        .factory('appData' , function ($http, $q){
+        .factory('appData' , function ($http){
             function getData(){
                 return $http.get('/api/site/info');
             }
@@ -21,7 +21,7 @@ define([
             };
         })
 
-        .factory('authService' , function ($http, $q){
+        .factory('authService' , function ($http){
             function login(credentials) {
                 return $http.post('/api/user/login', credentials);
             }
@@ -36,7 +36,7 @@ define([
             };
         })
 
-        .factory('photoService', function ($http, $q){
+        .factory('photoService', function ($http){
             function getPhotos(){
                 return $http.get('/api/photos');
             }
@@ -49,6 +49,20 @@ define([
                 getPhotos : getPhotos,
                 deletePhoto : deletePhoto
             };
+        })
+
+        .factory('messageService', function($rootScope){
+            var message = {};
+            return {
+                getMessage: function () {
+                    return message;
+                },
+                setMessage: function (newMessage) {
+                    message.type = newMessage.type;
+                    message.message = newMessage.message;
+                    $rootScope.$broadcast('newMessage')
+                }
+            }
         })
 });
 

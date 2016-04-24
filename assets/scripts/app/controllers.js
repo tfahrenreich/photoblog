@@ -35,7 +35,7 @@ define([
                 });
         })
 
-        .controller("AdminLoginCtrl", function($scope, $location, $cookies, authService, $log){
+        .controller("AdminLoginCtrl", function($scope, $location, $cookies, authService, $log, messageService){
             $scope.credentials = {
                 username: '',
                 password: ''
@@ -46,14 +46,17 @@ define([
                     function(response) {
                         $cookies.loggedInUser = response.data;
                         $location.path('/admin/pages');
+                        messageService.setMessage({type:'success', message: response.data});
+
                     },
                     function(error) {
+                        messageService.setMessage({type:'alert', message: error.data});
                         $log.log(error);
                     });
             };
         })
 
-        .controller("AdminPhotosCtrl", function($scope, $log, photoService, appData){
+        .controller("AdminPhotosCtrl", function($scope, $log, photoService, appData, messageService){
             photoService.getPhotos().then(
                 function(response) {
                     $scope.allPhotos = response.data;
@@ -68,7 +71,8 @@ define([
                 appData.setData($scope.siteDataForm).then(
                     function(response){
                         $scope.siteDataForm = {};
-                        $scope.$emit('refreshAppData')
+                        $scope.$emit('refreshAppData');
+                        messageService.setMessage({type: 'success', message: 'Info Updated!'})
                     },
                     function(error){
                         $log.debug(error)
@@ -79,6 +83,7 @@ define([
             $scope.deletePhoto = function(photo) {
                 photoService.deletePhoto(photo._id).then(
                     function(response){
+                        messageService.setMessage({type:'warning', message: photo.title+" deleted"});
                         $scope.allPhotos.splice($scope.allPhotos.indexOf(photo), 1)
                     },
                     function(error){
