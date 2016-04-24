@@ -11,23 +11,28 @@ define([
                 return $http.get('/api/site/info');
             }
 
+            function setData(formData){
+                return $http.post('/api/site/set', formData);
+            }
+
             return {
-                getData : getData
+                getData : getData,
+                setData : setData
             };
         })
 
-        .factory('photoService', function ($http, $q){
-            function getPhotos(){
-                return $http.get('/api/photos');
+        .factory('authService' , function ($http, $q){
+            function login(credentials) {
+                return $http.post('/api/user/login', credentials);
             }
 
-            function deletePhoto(id){
-                return $http.get('/api/photos/delete/' + id)
+            function logout(){
+                return $http.get('/api/user/logout');
             }
 
             return {
-                getPhotos : getPhotos,
-                deletePhoto : deletePhoto
+                login : login,
+                logout : logout
             };
         })
 

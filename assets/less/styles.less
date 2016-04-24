@@ -1,1 +1,21 @@
+@import (inline, optional) url(https://fonts.googleapis.com/css?family=Oswald:400,700);
 @import (inline) "foundation.min.css";
+@import (reference) "mixins.less";
+
+[ng-cloak]{
+  display: none;
+}
+
+h1,h2,h3,h4,h5,h6{
+  .header-font;
+  .transition;
+}
+
+.button{
+  .header-font;
+}
+
+.panel{
+  padding: .8rem;
+  background: @mute;
+}

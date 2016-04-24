@@ -35,5 +35,7 @@ define([
             });
             $locationProvider.html5Mode(true);
         }
-    );
+        ).run(function($log){
+            $log.debug('Angular : photoBlog init\'d');
+        });
 });

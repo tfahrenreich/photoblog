@@ -8,13 +8,21 @@ define([
     controllers
 
         .controller("AppContainerCtrl", function($scope, $log, appData){
-            appData.getData().then(
-                function(response){
-                    $scope.appData = response.data
-                },
-                function(error){
-                    $log.error(error)
-                })
+            $scope.getData = function(){
+                appData.getData().then(
+                    function(response){
+                        $scope.appData = response.data
+                    },
+                    function(error){
+                        $log.error(error)
+                    });
+            };
+
+            $scope.$on('refreshAppData', function (){
+                $scope.getData();
+            });
+
+            $scope.getData();
         })
 
         .controller("IndexCtrl", function($scope, $log, photoService){
@@ -45,7 +53,7 @@ define([
             };
         })
 
-        .controller("AdminPhotosCtrl", function($scope, $log, photoService){
+        .controller("AdminPhotosCtrl", function($scope, $log, photoService, appData){
             photoService.getPhotos().then(
                 function(response) {
                     $scope.allPhotos = response.data;
@@ -54,8 +62,29 @@ define([
                     $log.error(error);
                 });
 
-            $scope.deletePhoto = function(id) {
-                photoService.deletePhoto(id);
+            $scope.siteDataForm = {};
+
+            $scope.updateSiteInfo = function(){
+                appData.setData($scope.siteDataForm).then(
+                    function(response){
+                        $scope.siteDataForm = {};
+                        $scope.$emit('refreshAppData')
+                    },
+                    function(error){
+                        $log.debug(error)
+                    }
+                );
+            };
+
+            $scope.deletePhoto = function(photo) {
+                photoService.deletePhoto(photo._id).then(
+                    function(response){
+                        $scope.allPhotos.splice($scope.allPhotos.indexOf(photo), 1)
+                    },
+                    function(error){
+                        $log.error(error)
+                    }
+                );
             };
         });
 });

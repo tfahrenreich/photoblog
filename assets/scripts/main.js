@@ -26,5 +26,4 @@ require([
     //'app/filters'
 ], function(){
     angular.bootstrap(document, ['photoBlog']);
-    console.log('angular:photoBlog init\'d');
 });

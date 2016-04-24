@@ -30,7 +30,7 @@ router.post('/set', sessionCheck, function(request, response){
                 name: site.name
             }
         }).exec();
-        response.status(200).send("site updated");
+        response.status(200).send(site);
     })
 });
 

@@ -7,6 +7,13 @@ html
         link(rel="stylesheet", href="/assets/less/compiled/styles.css", type="text/css")
         title PhotoBlog
         base(href="/")
-    body(ng-controller="AppContainerCtrl")
+    body(ng-controller="AppContainerCtrl", ng-cloak)
+
+        div(class="row")
+            div(class="small-12 columns")
+                h1 {{appData.name}}
+
+        div(ng-view, class="row")
+
         script(data-main="/assets/scripts/main.js" , src="/assets/scripts/libs/requirejs/require.js")
-        div(ng-view)
+
