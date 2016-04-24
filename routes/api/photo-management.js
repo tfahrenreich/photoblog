@@ -33,6 +33,7 @@ router.post('/add', sessionCheck, imageUpload, function(request, response){
         files: {
             actual: request.file.path,
             original: "/assets/images/uploaded/"+request.file.filename,
+            thumb: "/assets/images/uploaded/"+request.file.filename+"_thumb",
             medium: "/assets/images/uploaded/"+request.file.filename+"_med",
             small: "/assets/images/uploaded/"+request.file.filename+"_small",
             large: "/assets/images/uploaded/"+request.file.filename+"_large"

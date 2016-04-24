@@ -6,12 +6,16 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var PhotoSchema = new Schema({
-    title: String,
+    title: {
+        type: String,
+        default : 'untitled'
+    },
     filename: String,
     date: Date,
     files: {
         actual: String,
         original: String,
+        thumb: String,
         medium: String,
         small: String,
         large: String

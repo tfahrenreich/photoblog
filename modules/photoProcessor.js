@@ -15,6 +15,12 @@ function processImage(path){
         function(err){
             if(err) return err;
 
+            // Thumbnail
+            im.convert([path,'-resize','215x', '-gravity', 'Center',  '-crop', '140x140+0+0', path+'_thumb'],
+                function(err){
+                    if(err){console.log("thmb:"+err)}
+                });
+
             // Create Small
             im.convert([path, '-resize','256x', path+'_small'],
                 function(err){

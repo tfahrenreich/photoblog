@@ -4,6 +4,7 @@
 doctype !!!
 html
     head
+        meta(name="viewport", content="width=device-width", initial-scale="1", maximum-scale="1", user-scalable="0")
         link(rel="stylesheet", href="/assets/less/compiled/styles.css", type="text/css")
         title PhotoBlog
         base(href="/")
@@ -11,9 +12,10 @@ html
 
         div(class="row")
             div(class="small-12 columns")
-                h1 {{appData.name}}
+                h1(class='title')
+                    a(href='/') {{appData.name}}
 
-        div(ng-view, class="row")
+        div(ng-view)
 
         script(data-main="/assets/scripts/main.js" , src="/assets/scripts/libs/requirejs/require.js")
 

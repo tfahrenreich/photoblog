@@ -1,5 +1,7 @@
 // COLORS
 @mute: #D9EFE9;
+@grey: #D4D4D4;
+@dark: #0a0a0a;
 
 .header-font(){
   font-family: Oswald, sans-serif;
@@ -12,4 +14,10 @@
   -ms-transition: @transition;
   -o-transition: @transition;
   transition: @transition;
+}
+
+.panel(@margin-bottom: 1rem, @background-color: @mute){
+  padding: .8rem;
+  background: @background-color;
+  margin-bottom: @margin-bottom;
 }
