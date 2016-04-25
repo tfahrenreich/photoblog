@@ -45,7 +45,7 @@ define([
                 authService.login(credentials).then(
                     function(response) {
                         $cookies.loggedInUser = response.data;
-                        $location.path('/admin/pages');
+                        $location.path('/admin');
                         messageService.setMessage({type:'success', message: response.data});
 
                     },
@@ -56,12 +56,13 @@ define([
             };
         })
 
-        .controller("AdminPhotosCtrl", function($scope, $log, photoService, appData, messageService){
+        .controller("AdminCtrl", function($scope, $log, photoService, appData, messageService){
             photoService.getPhotos().then(
                 function(response) {
                     $scope.allPhotos = response.data;
                 },
                 function(error) {
+                    messageService.setMessage({type:"alert", message: error.data});
                     $log.error(error);
                 });
 
@@ -91,5 +92,45 @@ define([
                     }
                 );
             };
-        });
+        })
+
+        .controller("AdminCollectionCtrl", function($scope, $log, collectionService, messageService){
+            collectionService.getCollections().then(
+                function(response){
+                    $scope.collections = response.data;
+                },
+                function(error){
+                    messageService.setMessage({type:"alert", message: error.data});
+                    $log.error(error);
+                }
+            );
+
+            $scope.newCollection = {};
+
+            $scope.addCollection = function(){
+                collectionService.addCollection($scope.newCollection).then(
+                    function(response){
+                        messageService.setMessage({type:"success", message: $scope.newCollection.name+" Created"});
+                        $scope.collections.push(response.data);
+                        $scope.newCollection = {};
+                    },
+                    function(error){
+
+                    }
+                )
+            }
+        })
+
+        .controller("AdminPhotoCtrl", function($scope, $log, photoService, messageService, $routeParams){
+            photoService.getPhotos([$routeParams.id]).then(
+                function(response){
+                    $scope.photo = response.data
+                },
+                function(error) {
+                    $scope.photo = false;
+                    messageService.setMessage({type:"alert", message: "No Photos by that ID(s)"});
+                    $log.error(error)
+                }
+            )
+        })
 });

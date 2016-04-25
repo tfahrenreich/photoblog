@@ -16,7 +16,7 @@ function processImage(path){
             if(err) return err;
 
             // Thumbnail
-            im.convert([path,'-resize','215x', '-gravity', 'Center',  '-crop', '140x140+0+0', path+'_thumb'],
+            im.convert([path,'-resize','230x', '-gravity', 'Center',  '-crop', '140x140+0+0', path+'_thumb'],
                 function(err){
                     if(err){console.log("thmb:"+err)}
                 });
@@ -34,7 +34,13 @@ function processImage(path){
                 });
 
             // Create large
-            im.convert([path, '-resize','800x', path+'_large'],
+            im.convert([path, '-resize','1024x', path+'_large'],
+                function(err){
+                    if(err){console.log("lrg:"+err)}
+                });
+
+            // Create huge
+            im.convert([path, '-resize','2048x', path+'_huge'],
                 function(err){
                     if(err){console.log("lrg:"+err)}
                 });

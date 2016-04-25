@@ -26,7 +26,22 @@ h1.title{
   .panel(2rem);
 }
 
+.collection-menu{
+  .panel{
+    .panel();
+  }
+}
+
+.collection-list{
+  .panel{
+    .panel(@background-color: @grey)
+  }
+}
+
 .image-list{
+  [ng-repeat]{
+    .transition();
+  }
   .panel{
     .panel(@background-color: @grey;);
     img{

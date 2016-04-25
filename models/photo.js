@@ -8,7 +8,7 @@ var Schema = mongoose.Schema;
 var PhotoSchema = new Schema({
     title: {
         type: String,
-        default : 'untitled'
+        default: 'untitled'
     },
     filename: String,
     date: Date,
@@ -18,7 +18,8 @@ var PhotoSchema = new Schema({
         thumb: String,
         medium: String,
         small: String,
-        large: String
+        large: String,
+        huge: String
     }
 });
 

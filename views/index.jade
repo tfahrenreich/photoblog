@@ -2,21 +2,19 @@
    Created by Tim on 2/24/2016.
 
 doctype !!!
-html
+html(ng-controller="AppContainerCtrl")
     head
         meta(name="viewport", content="width=device-width", initial-scale="1", maximum-scale="1", user-scalable="0")
         link(rel="stylesheet", href="/assets/less/compiled/styles.css", type="text/css")
-        title PhotoBlog
+        title {{appData.name}}
         base(href="/")
-    body(ng-controller="AppContainerCtrl", ng-cloak)
+    body(ng-cloak)
 
         div(class="row")
             div(class="small-12 columns")
                 h1(class='title')
                     a(href='/') {{appData.name}}
         div(message-flash)
-
         div(ng-view)
-
         script(data-main="/assets/scripts/main.js" , src="/assets/scripts/libs/requirejs/require.js")
 

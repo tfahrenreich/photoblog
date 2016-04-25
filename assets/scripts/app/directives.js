@@ -10,14 +10,16 @@ define([
             return{
                 controller: function($scope, messageService, $timeout){
                     $scope.$on('newMessage', function(){
-                        $scope.message = messageService.getMessage();
-                        $("#message-box").slideDown();
+                        $("#message-box").slideUp('fast', function(){
+                            $scope.message = messageService.getMessage();
+                            $("#message-box").slideDown();
 
-                        return $timeout(function() {
-                            $("#message-box").slideUp(function(){
-                                return $scope.message = '';
-                            });
-                        }, 4000);
+                            return $timeout(function() {
+                                $("#message-box").slideUp(function(){
+                                    return $scope.message = '';
+                                });
+                            }, 4000);
+                        });
                     })
                 },
                 templateUrl: '/assets/angular-views/directive-message-service.html'

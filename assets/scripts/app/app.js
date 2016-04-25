@@ -22,13 +22,17 @@ define([
                 templateUrl: '/assets/angular-views/template-admin-login.html',
                 controller: 'AdminLoginCtrl'
             });
-            $routeProvider.when('/admin/photos', {
-                templateUrl: '/assets/angular-views/template-admin-photos.html',
-                controller: 'AdminPhotosCtrl'
+            $routeProvider.when('/admin', {
+                templateUrl: '/assets/angular-views/template-admin-index.html',
+                controller: 'AdminCtrl'
             });
             $routeProvider.when('/admin/edit-photo/:id', {
-                templateUrl: '/assets/angular-views/template-admin-edit-photo.html',
-                controller: 'AddEditPageCtrl'
+                templateUrl: '/assets/angular-views/template-admin-photo.html',
+                controller: 'AdminPhotoCtrl'
+            });
+            $routeProvider.when('/admin/collections', {
+                templateUrl: '/assets/angular-views/template-admin-collections.html',
+                controller: 'AdminCollectionCtrl'
             });
             $routeProvider.otherwise({
                 redirectTo: '/index'

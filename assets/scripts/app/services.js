@@ -37,8 +37,15 @@ define([
         })
 
         .factory('photoService', function ($http){
-            function getPhotos(){
-                return $http.get('/api/photos');
+            function getPhotos(photoID){
+                //accepts array of IDs
+                photoID = photoID || null;
+
+                return $http.get('/api/photos', {
+                    params:{
+                        'photo[]' : photoID
+                    }
+                });
             }
 
             function deletePhoto(id){
@@ -48,6 +55,26 @@ define([
             return {
                 getPhotos : getPhotos,
                 deletePhoto : deletePhoto
+            };
+        })
+        
+        .factory('collectionService', function ($http){
+            function getCollections(){
+                return $http.get('/api/collections');
+            }
+
+            function addCollection(name){
+                return $http.post('/api/collections/add', name);
+            }
+
+            function deleteCollection(id){
+                return $http.get('/api/collections/delete/' + id)
+            }
+
+            return {
+                getCollections : getCollections,
+                addCollection : addCollection,
+                deleteCollection : deleteCollection
             };
         })
 

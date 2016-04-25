@@ -17,14 +17,20 @@ var Photo = require('../../models/photo.js');
 
 /* PHOTO MANAGEMENT*/
 router.get('/', function(request, response) {
-
-    return Photo.find(function(err, photos) {
-        if (!err) {
-            return response.status(201).send(photos);
-        } else {
-            return response.status(500).send(err);
-        }
-    });
+    //returns all photos if no queries
+    if(!request.query.photo){
+        return Photo.find(function(error, photos) {
+            if (error) return response.status(500).send(err);
+            return response.status(200).send(photos);
+        });
+    }else{
+        return Photo.find({
+            '_id': { $in: request.query.photo}
+        }, function(error, photos){
+            if (error) return response.status(500).send(error);
+            return response.status(200).send(photos);
+        });
+    }
 });
 
 router.post('/add', sessionCheck, imageUpload, function(request, response){
@@ -36,7 +42,8 @@ router.post('/add', sessionCheck, imageUpload, function(request, response){
             thumb: "/assets/images/uploaded/"+request.file.filename+"_thumb",
             medium: "/assets/images/uploaded/"+request.file.filename+"_med",
             small: "/assets/images/uploaded/"+request.file.filename+"_small",
-            large: "/assets/images/uploaded/"+request.file.filename+"_large"
+            large: "/assets/images/uploaded/"+request.file.filename+"_large",
+            huge: "/assets/images/uploaded/"+request.file.filename+"_huge"
         }
     });
 

@@ -15,5 +15,6 @@ router.get('/', function(req, res) {
 router.use('/user', require('./user-authentication'));
 router.use('/photos', require('./photo-management'));
 router.use('/site', require('./site-management'));
+router.use('/collections', require('./collection-management'));
 
 module.exports = router;
