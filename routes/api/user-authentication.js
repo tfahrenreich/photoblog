@@ -59,10 +59,19 @@ router.post('/login', function(request, response) {
     });
 });
 
+router.get('/check', sessionCheck, function(request, response){
+    return response.status(200).send(request.session.user)
+});
+
 router.get('/logout', function(request, response) {
     request.session.destroy(function() {
         return response.status(401).send('User logged out');
     });
 });
+
+function sessionCheck(request,response,next){
+    if(request.session.user) next();
+    else response.status(401).send('authorization failed');
+}
 
 module.exports = router;
