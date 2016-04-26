@@ -25,8 +25,8 @@ require([
     'angular',
     'app/controllers',
     'app/services',
-    'app/directives'
-    //'app/filters'
+    'app/directives',
+    'app/filters'
 ], function(){
     angular.bootstrap(document, ['photoBlog']);
 });

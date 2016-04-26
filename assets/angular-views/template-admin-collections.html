@@ -9,7 +9,7 @@
             <form ng-submit="addCollection()">
                 <input type="text" placeholder="Add Collection" ng-model="newCollection.name"/>
             </form>
-            <ul>
+            <ul class="no-bullet">
                 <li ng-repeat="collection in collections">
                     {{collection.name}}
                 </li>

@@ -33,6 +33,9 @@ define([
                 resolve: {
                     photos: function ($route, photoService) {
                         return photoService.loadPhotos();
+                    },
+                    collections: function (collectionService) {
+                        return collectionService.loadCollections();
                     }
                 }
             });

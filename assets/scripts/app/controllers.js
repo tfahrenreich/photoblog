@@ -50,8 +50,9 @@ define([
             };
         })
 
-        .controller("AdminCtrl", function($scope, $log, photoService, appData, messageService){
+        .controller("AdminCtrl", function($scope, $log, appData, messageService, photoService, collectionService){
             $scope.allPhotos = photoService.photos;
+            $scope.allCollections = collectionService.collections;
             $scope.siteDataForm = {};
 
             $scope.updateSiteInfo = function(){
