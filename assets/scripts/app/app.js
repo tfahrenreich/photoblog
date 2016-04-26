@@ -14,12 +14,31 @@ define([
         .config(function($routeProvider, $locationProvider) {
             //TODO: protected routes
 
-            $routeProvider.when('/index', {
+            $routeProvider.when('/', {
                 templateUrl: '/assets/angular-views/template-index.html',
                 controller: 'IndexCtrl',
                 resolve: {
                     photos: function ($route, photoService) {
                         return photoService.loadPhotos();
+                    },
+                    collections: function (collectionService) {
+                        collectionService.populatedCollection = false;
+                        return collectionService.loadCollections();
+                    }
+                }
+            });
+            $routeProvider.when('/collections/:id', {
+                templateUrl: '/assets/angular-views/template-index.html',
+                controller: 'IndexCtrl',
+                resolve: {
+                    photos: function ($route, photoService) {
+                        return photoService.loadPhotos();
+                    },
+                    collections: function (collectionService) {
+                        return collectionService.loadCollections();
+                    },
+                    loadCollection: function($route, collectionService){
+                        return collectionService.loadPopulatedCollection($route.current.params.id)
                     }
                 }
             });
@@ -61,7 +80,7 @@ define([
                 }
             });
             $routeProvider.otherwise({
-                redirectTo: '/index'
+                redirectTo: '/'
             });
             $locationProvider.html5Mode(true);
         }

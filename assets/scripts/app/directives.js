@@ -55,5 +55,17 @@ define([
                     }
                 });
             };
+        })
+        .directive('collectionView', function(){
+            return{
+                restrict: 'E',
+                templateUrl: '/assets/angular-views/directive-view-collection.html'
+            }
+        })
+        .directive('indexView', function(){
+            return{
+                restrict: 'E',
+                templateUrl: '/assets/angular-views/directive-view-index.html'
+            }
         });
 });

@@ -79,9 +79,11 @@ define([
             return service;
         })
         
-        .factory('collectionService', function ($http, $q){
+        .factory('collectionService', function ($http, $q, messageService){
             var service = {
                 collections : [],
+                populatedCollection: {},
+                loadPopulatedCollection: loadPopulatedCollection,
                 loadCollections : loadCollections,
                 addCollection : addCollection,
                 deleteCollection : deleteCollection
@@ -96,6 +98,22 @@ define([
                     deferred.resolve(response.data);
                     return deferred.promise;
                 });
+            }
+
+            function loadPopulatedCollection(id){
+                var deferred = $q.defer();
+
+                return $http.get('/api/collections/get/'+id).then(
+                    function(response){
+                        service.populatedCollection = response.data[0];
+                        deferred.resolve(response.data);
+                        return deferred.promise;
+                    },function(error){
+                        messageService.setMessage({type:"alert", message: "No Collection by that ID"});
+                        deferred.resolve(error.data);
+                        return deferred.promise;
+                    }
+                )
             }
 
             function addCollection(name){

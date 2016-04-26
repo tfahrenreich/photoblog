@@ -6,7 +6,6 @@ define([
     'app/app'
 ], function(controllers){
     controllers
-
         .controller("AppContainerCtrl", function($scope, $log, appData){
             $scope.getData = function(){
                 appData.getData().then(
@@ -25,8 +24,10 @@ define([
             $scope.getData();
         })
 
-        .controller("IndexCtrl", function($scope, $log, photoService){
+        .controller("IndexCtrl", function($scope, $log, photoService, collectionService){
             $scope.allPhotos = photoService.photos;
+            $scope.allCollections = collectionService.collections;
+            $scope.collection = collectionService.populatedCollection;
         })
 
         .controller("AdminLoginCtrl", function($scope, $location, $cookies, authService, $log, messageService){

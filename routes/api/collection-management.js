@@ -14,7 +14,6 @@ var Collection = require('../../models/collection.js');
 
 /* PHOTO MANAGEMENT*/
 router.get('/', function(request, response) {
-
     return Collection.find(function(err, collections) {
         if (!err) {
             return response.status(201).send(collections);
@@ -22,6 +21,16 @@ router.get('/', function(request, response) {
             return response.status(500).send(err);
         }
     });
+});
+
+router.get('/get/:id', sessionCheck, function(request, response) {
+    var id = request.params.id;
+    Collection.find({
+        _id: id
+    }).populate('photos').exec(function(error, collection){
+        if(error) response.status(500).send(error);
+        return response.status(200).send(collection)
+    })
 });
 
 router.post('/add', sessionCheck, function(request, response){

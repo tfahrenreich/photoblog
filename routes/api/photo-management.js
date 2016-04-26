@@ -17,7 +17,7 @@ var Photo = require('../../models/photo.js');
 var Collection = require('../../models/collection.js');
 
 /* PHOTO MANAGEMENT*/
-router.get('/', function(request, response) {
+router.get('/', function(request, response){
     //returns all photos if no queries
     if(!request.query.photo){
         return Photo.find().populate('collections').exec(
@@ -86,7 +86,7 @@ router.post('/update/:id', sessionCheck, function(request, response) {
     response.send("photo updated");
 });
 
-router.post('/add-collection', function(request, response){
+router.post('/add-collection', sessionCheck, function(request, response){
     var collection_id = request.body.collection,
         photo_id = request.body.photo,
         res = {};
