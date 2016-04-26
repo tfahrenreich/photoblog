@@ -20,7 +20,8 @@ var PhotoSchema = new Schema({
         small: String,
         large: String,
         huge: String
-    }
+    },
+    collections: [{ type: Schema.Types.ObjectId, ref: 'Collection' }]
 });
 
 var Photo = mongoose.model('Photo', PhotoSchema);

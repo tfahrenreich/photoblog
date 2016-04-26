@@ -41,5 +41,6 @@ define([
         }
         ).run(function($log){
             $log.debug('Angular : photoBlog init\'d');
+            //TODO check for authentication on admin routes
         });
 });

@@ -9,7 +9,7 @@ var express = require('express'),
     router = express.Router(),
     mongoose = require('mongoose'),
     multer  = require('multer')({dest: 'assets/uploads/'}),
-    imageUpload = multer.single('photo'),
+    imageUpload = multer.array('photos'),
     photoLab = require('../../modules/photoProcessor.js');
 
 /* MODELS */
@@ -34,28 +34,34 @@ router.get('/', function(request, response) {
 });
 
 router.post('/add', sessionCheck, imageUpload, function(request, response){
-    var photo = new Photo({
-        date: new Date(Date.now()),
-        files: {
-            actual: request.file.path,
-            original: "/assets/images/uploaded/"+request.file.filename,
-            thumb: "/assets/images/uploaded/"+request.file.filename+"_thumb",
-            medium: "/assets/images/uploaded/"+request.file.filename+"_med",
-            small: "/assets/images/uploaded/"+request.file.filename+"_small",
-            large: "/assets/images/uploaded/"+request.file.filename+"_large",
-            huge: "/assets/images/uploaded/"+request.file.filename+"_huge"
-        }
-    });
+    var photos = [], i;
 
-    photoLab.processImage(photo.files.actual);
+    //todo make a job queue && make wait for process to finish. probably with a manual recursive loop
 
-    photo.save(function(err) {
-        if (!err) {
-            return response.status(200).send(photo);
-        } else {
-            return response.status(500).send(err);
-        }
-    });
+    for(i=0; i < request.files.length; i++){
+        var file = request.files[i];
+
+        var photo = new Photo({
+            date: new Date(Date.now()),
+            files: {
+                actual: file.path,
+                original: "/assets/images/uploaded/"+file.filename,
+                thumb: "/assets/images/uploaded/"+file.filename+"_thumb",
+                medium: "/assets/images/uploaded/"+file.filename+"_med",
+                small: "/assets/images/uploaded/"+file.filename+"_small",
+                large: "/assets/images/uploaded/"+file.filename+"_large",
+                huge: "/assets/images/uploaded/"+file.filename+"_huge"
+            }
+        });
+        photos.push(photo);
+
+        photo.save(function(err) {
+            if(err) photos.pop().push(err);
+        });
+    }
+    photoLab.processImage(photos);
+
+    return response.status(200).send(photos);
 });
 
 router.post('/update/:id', sessionCheck, function(request, response) {

@@ -121,7 +121,7 @@ define([
             }
         })
 
-        .controller("AdminPhotoCtrl", function($scope, $log, photoService, messageService, $routeParams){
+        .controller("AdminPhotoCtrl", function($scope, $log, photoService, messageService, $routeParams, collectionService){
             photoService.getPhotos([$routeParams.id]).then(
                 function(response){
                     $scope.photo = response.data
@@ -129,6 +129,17 @@ define([
                 function(error) {
                     $scope.photo = false;
                     messageService.setMessage({type:"alert", message: "No Photos by that ID(s)"});
+                    $log.error(error)
+                }
+            );
+
+            collectionService.getCollections().then(
+                function(response){
+                    $scope.collections = response.data
+                },
+                function(error) {
+                    $scope.photo = false;
+                    messageService.setMessage({type:"alert", message: "Error getting collections"});
                     $log.error(error)
                 }
             )

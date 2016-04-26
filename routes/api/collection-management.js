@@ -27,12 +27,10 @@ router.get('/', function(request, response) {
 router.post('/add', sessionCheck, function(request, response){
     var collection = new Collection({
         name: request.body.name,
-        content: [],
+        label: request.body.name.toLowerCase(),
         date: new Date(Date.now())
     });
 
-    collection.content.push(50);
-    
     collection.save(function(err) {
         if (!err) {
             return response.status(200).send(collection);

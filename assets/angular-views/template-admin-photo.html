@@ -1,3 +1,24 @@
-<div class="small-8 small-centered" ng-show="photo">
-    <img src="{{photo[0].files.huge}}">
+<div class="row">
+    <div class="small-12 small-centered column">
+        <a href="javascript:history.back()">Go Back</a>
+    </div>
+</div>
+<div class="row photo-viewer" ng-show="photo">
+    <div class="small-8 small-centered">
+        <div class="row">
+            <img src="{{photo[0].files.huge}}">
+            <h4>{{photo[0].title}}</h4>
+        </div>
+        <div class="row">
+            <div class="small-4">
+                <div class="panel">
+                    <ul ng-show="photo[0].collections.length > 0">
+                        <li ng-repeat="collection in photo[0].collections">
+                            {{collection}}
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

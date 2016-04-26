@@ -3,7 +3,8 @@
  */
 
 define([
-    'app/app'
+    'app/app',
+    'jqueryUI'
 ], function(directives) {
     directives
         .directive('messageFlash', function(){
@@ -25,4 +26,17 @@ define([
                 templateUrl: '/assets/angular-views/directive-message-service.html'
             }
         })
+
+        .directive('autoComplete', function($timeout) {
+            return function(scope, iElement, iAttrs) {
+                iElement.autocomplete({
+                    source: scope[iAttrs.uiItems],
+                    select: function() {
+                        $timeout(function() {
+                            iElement.trigger('input');
+                        }, 0);
+                    }
+                });
+            };
+        });
 });

@@ -15,6 +15,7 @@ router.use('/assets/scripts/libs/angular-cookies', express.static(__base + '/nod
 router.use('/assets/scripts/libs/angular-resource', express.static(__base + '/node_modules/angular-resource'));
 router.use('/assets/scripts/libs/angular-route', express.static(__base + '/node_modules/angular-route'));
 router.use('/assets/scripts/libs/jquery', express.static(__base + '/node_modules/jquery/dist'));
+router.use('/assets/scripts/libs/jquery-ui', express.static(__base + '/node_modules/jquery-ui/'));
 
 /** SERVE UPLOADED IMAGES*/
 router.get('/assets/images/uploaded/:file', function(request ,response){

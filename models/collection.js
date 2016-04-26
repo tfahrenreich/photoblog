@@ -10,7 +10,11 @@ var CollectionSchema = new Schema({
         type: String,
         required: true
     },
-    content: Array,
+    label:{
+        type: String,
+        required: true
+    },
+    photos: [{ type: Schema.Types.ObjectId, ref: 'Photo' }],
     date: Date
 });
 
