@@ -27,14 +27,31 @@ define([
             }
         })
 
-        .directive('autoComplete', function($timeout) {
-            return function(scope, iElement, iAttrs) {
-                iElement.autocomplete({
-                    source: scope[iAttrs.uiItems],
-                    select: function() {
-                        $timeout(function() {
-                            iElement.trigger('input');
-                        }, 0);
+        .directive('collectionAutoComplete', function($timeout) {
+            return function($scope, element, attrs) {
+                $(element).autocomplete({
+                    source: $scope[attrs.uiItems],
+                    messages: {
+                        noResults: '',
+                        results: function(){}
+                    },
+                    search: function(event, ui){
+                        var usedCollections = $scope.photo.collections;
+                        var filteredItems = $scope[attrs.uiItems].filter(
+                            function(collection){
+                              var found = usedCollections.find(function(used){
+                                     return used._id === collection._id;
+                                });
+                                return found === undefined;
+                            }
+                        );
+                        $(element).autocomplete('option','source',filteredItems);
+                    },
+                    select:function(event, ui){
+                        var collectionID = ui.item._id;
+                        $(element).val('');
+                        $scope.addToCollection(collectionID);
+                        return false;
                     }
                 });
             };

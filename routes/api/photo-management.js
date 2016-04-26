@@ -14,22 +14,27 @@ var express = require('express'),
 
 /* MODELS */
 var Photo = require('../../models/photo.js');
+var Collection = require('../../models/collection.js');
 
 /* PHOTO MANAGEMENT*/
 router.get('/', function(request, response) {
     //returns all photos if no queries
     if(!request.query.photo){
-        return Photo.find(function(error, photos) {
-            if (error) return response.status(500).send(err);
-            return response.status(200).send(photos);
-        });
+        return Photo.find().populate('collections').exec(
+            function(error, photos){
+                if (error) return response.status(500).send(error);
+                return response.status(200).send(photos);
+            }
+        );
     }else{
         return Photo.find({
             '_id': { $in: request.query.photo}
-        }, function(error, photos){
-            if (error) return response.status(500).send(error);
-            return response.status(200).send(photos);
-        });
+        }).populate('collections').exec(
+            function(error, photos){
+                if (error) return response.status(500).send(error);
+                return response.status(200).send(photos);
+            }
+        );
     }
 });
 
@@ -79,6 +84,39 @@ router.post('/update/:id', sessionCheck, function(request, response) {
         }
     }).exec();
     response.send("photo updated");
+});
+
+router.post('/add-collection', function(request, response){
+    var collection_id = request.body.collection,
+        photo_id = request.body.photo,
+        res = {};
+
+    Photo.findByIdAndUpdate(
+        photo_id,
+        {
+            $addToSet: {collections: collection_id}
+        }, function(error, photo){
+            if(error){
+                res.error = error;
+                return response.status(500).send(error);
+            }
+            res.photo = photo;
+
+            Collection.findByIdAndUpdate(
+                collection_id,
+                {
+                    $addToSet: {photos: photo_id}
+                }, function(error, collection){
+                    if(error){
+                        res.error = error;
+                        return response.status(500).send(error);
+                    }
+                    res.collection = collection;
+                    return response.status(200).send(res)
+                }
+            );
+        }
+    );
 });
 
 router.get('/delete/:id', sessionCheck, function(request, response) {

@@ -36,8 +36,18 @@ define([
             };
         })
 
-        .factory('photoService', function ($http){
-            function getPhotos(photoID){
+        .factory('photoService', function ($http, $q, messageService){
+
+            var service = {
+                photos: [],
+                addPhotoToCollection: addPhotoToCollection,
+                loadPhotos : loadPhotos,
+                deletePhoto : deletePhoto
+            };
+
+            function loadPhotos(photoID){
+                var deferred = $q.defer();
+
                 //accepts array of IDs
                 photoID = photoID || null;
 
@@ -45,22 +55,47 @@ define([
                     params:{
                         'photo[]' : photoID
                     }
+                }).then(
+                function(response){
+                    service.photos = response.data;
+                    deferred.resolve(response.data);
+                    return deferred.promise;
+                },
+                function(error){
+                    messageService.setMessage({type:"alert", message: "No Photos by that ID(s)"});
+                    deferred.resolve(error.data);
+                    return deferred.promise;
                 });
             }
 
-            function deletePhoto(id){
-                return $http.get('/api/photos/delete/' + id)
+            function deletePhoto(photoID){
+                return $http.get('/api/photos/delete/' + photoID)
             }
 
-            return {
-                getPhotos : getPhotos,
-                deletePhoto : deletePhoto
-            };
+            function addPhotoToCollection(IDs){
+                return $http.post('/api/photos/add-collection', IDs)
+            }
+
+            return service;
         })
         
-        .factory('collectionService', function ($http){
-            function getCollections(){
-                return $http.get('/api/collections');
+        .factory('collectionService', function ($http, $q){
+            var service = {
+                collections : [],
+                loadCollections : loadCollections,
+                addCollection : addCollection,
+                deleteCollection : deleteCollection
+            };
+
+            function loadCollections(){
+                var deferred = $q.defer();
+
+                return $http.get('/api/collections').then(
+                    function (response) {
+                    service.collections = response.data;
+                    deferred.resolve(response.data);
+                    return deferred.promise;
+                });
             }
 
             function addCollection(name){
@@ -71,11 +106,7 @@ define([
                 return $http.get('/api/collections/delete/' + id)
             }
 
-            return {
-                getCollections : getCollections,
-                addCollection : addCollection,
-                deleteCollection : deleteCollection
-            };
+            return service
         })
 
         .factory('messageService', function($rootScope){

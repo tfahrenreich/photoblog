@@ -26,13 +26,7 @@ define([
         })
 
         .controller("IndexCtrl", function($scope, $log, photoService){
-            photoService.getPhotos().then(
-                function(response) {
-                    $scope.allPhotos = response.data;
-                },
-                function(error) {
-                    $log.error(error);
-                });
+            $scope.allPhotos = photoService.photos;
         })
 
         .controller("AdminLoginCtrl", function($scope, $location, $cookies, authService, $log, messageService){
@@ -57,15 +51,7 @@ define([
         })
 
         .controller("AdminCtrl", function($scope, $log, photoService, appData, messageService){
-            photoService.getPhotos().then(
-                function(response) {
-                    $scope.allPhotos = response.data;
-                },
-                function(error) {
-                    messageService.setMessage({type:"alert", message: error.data});
-                    $log.error(error);
-                });
-
+            $scope.allPhotos = photoService.photos;
             $scope.siteDataForm = {};
 
             $scope.updateSiteInfo = function(){
@@ -80,7 +66,6 @@ define([
                     }
                 );
             };
-
             $scope.deletePhoto = function(photo) {
                 photoService.deletePhoto(photo._id).then(
                     function(response){
@@ -95,15 +80,7 @@ define([
         })
 
         .controller("AdminCollectionCtrl", function($scope, $log, collectionService, messageService){
-            collectionService.getCollections().then(
-                function(response){
-                    $scope.collections = response.data;
-                },
-                function(error){
-                    messageService.setMessage({type:"alert", message: error.data});
-                    $log.error(error);
-                }
-            );
+            $scope.collections = collectionService.collections;
 
             $scope.newCollection = {};
 
@@ -122,26 +99,21 @@ define([
         })
 
         .controller("AdminPhotoCtrl", function($scope, $log, photoService, messageService, $routeParams, collectionService){
-            photoService.getPhotos([$routeParams.id]).then(
-                function(response){
-                    $scope.photo = response.data
-                },
-                function(error) {
-                    $scope.photo = false;
-                    messageService.setMessage({type:"alert", message: "No Photos by that ID(s)"});
-                    $log.error(error)
-                }
-            );
+            $scope.photo = photoService.photos[0];
+            $scope.collections = collectionService.collections;
 
-            collectionService.getCollections().then(
-                function(response){
-                    $scope.collections = response.data
-                },
-                function(error) {
-                    $scope.photo = false;
-                    messageService.setMessage({type:"alert", message: "Error getting collections"});
-                    $log.error(error)
-                }
-            )
+            $scope.addToCollection = function(collectionID){
+                photoService.addPhotoToCollection({
+                    photo: $scope.photo._id,
+                    collection: collectionID
+                }).then(
+                    function(response){
+                        $scope.photo.collections.push(response.data.collection)
+                    },
+                    function(error){
+
+                    }
+                )
+            }
         })
 });
