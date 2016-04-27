@@ -9,6 +9,7 @@ require.config({
         jqueryUI:'/assets/scripts/libs/jquery-ui/jquery-ui',
         angular:'libs/angular/angular.min',
         angularRoute:'libs/angular-route/angular-route.min',
+        angularAnimate:'libs/angular-animate/angular-animate.min',
         angularCookies:'libs/angular-cookies/angular-cookies.min',
         angularResource:'libs/angular-resource/angular-resource.min'
      },
@@ -16,13 +17,13 @@ require.config({
          'jqueryUI' : ['jquery'],
          'angularRoute' : ['angular'],
          'angularCookies' : ['angular'],
-         'angularResource' : ['angular']
+         'angularResource' : ['angular'],
+         'angularAnimate' : ['angular']
      }
 });
 
 require([
     'app/app',
-    'angular',
     'app/controllers',
     'app/services',
     'app/directives',

@@ -8,9 +8,10 @@ define([
     'angular',
     'angularRoute',
     'angularCookies',
+    'angularAnimate',
     'angularResource'
 ], function(){
-    return angular.module("photoBlog", ['ngRoute', 'ngResource', 'ngCookies'])
+    return angular.module("photoBlog", ['ngRoute', 'ngResource', 'ngCookies', 'ngAnimate'])
         .config(function($routeProvider, $locationProvider) {
             //TODO: protected routes
 

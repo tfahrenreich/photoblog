@@ -11,6 +11,7 @@ router.use('/assets', express.static(__base + '/assets'));
 /** EXPOSED MODULES*/
 router.use('/assets/scripts/libs/requirejs', express.static(__base + '/node_modules/requirejs'));
 router.use('/assets/scripts/libs/angular', express.static(__base + '/node_modules/angular'));
+router.use('/assets/scripts/libs/angular-animate', express.static(__base + '/node_modules/angular-animate'));
 router.use('/assets/scripts/libs/angular-cookies', express.static(__base + '/node_modules/angular-cookies'));
 router.use('/assets/scripts/libs/angular-resource', express.static(__base + '/node_modules/angular-resource'));
 router.use('/assets/scripts/libs/angular-route', express.static(__base + '/node_modules/angular-route'));
