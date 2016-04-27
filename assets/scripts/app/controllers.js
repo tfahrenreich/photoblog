@@ -111,7 +111,7 @@ define([
                     collection: collectionID
                 }).then(
                     function(response){
-                        $scope.photo.collections.push(response.data.collection)
+                        $scope.photo.collections.push(response.collection)
                     },
                     function(error){
 

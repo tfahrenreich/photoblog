@@ -15,6 +15,7 @@ html(ng-controller="AppContainerCtrl")
                 h1(class='title')
                     a(href='/') {{appData.name}}
         div(message-flash)
-        div(ng-view)
+        div(class="view-container")
+            div(ng-view)
         script(data-main="/assets/scripts/main.js" , src="/assets/scripts/libs/requirejs/require.js")
 

@@ -12,8 +12,9 @@ define([
     'angularResource'
 ], function(){
     return angular.module("photoBlog", ['ngRoute', 'ngResource', 'ngCookies', 'ngAnimate'])
-        .config(function($routeProvider, $locationProvider) {
+        .config(function($routeProvider, $locationProvider, $httpProvider) {
             //TODO: protected routes
+            $httpProvider.interceptors.push('myHttpInterceptor');
 
             $routeProvider.when('/', {
                 templateUrl: '/assets/angular-views/template-index.html',
@@ -40,7 +41,7 @@ define([
                     }
                 }
             });
-            $routeProvider.when('/admin/login', {
+            $routeProvider.when('/login', {
                 templateUrl: '/assets/angular-views/template-admin-login.html',
                 controller: 'AdminLoginCtrl'
             });
@@ -99,9 +100,12 @@ define([
                 redirectTo: '/'
             });
             $locationProvider.html5Mode(true);
-        }
-        ).run(function($log){
+        })
+        .run(function($log, $rootScope ,authService, $location, $routeParams){
+            $rootScope.$on('$locationChangeStart', function(event) {
+                if(String($location.path()).includes('/admin')) authService.check()
+            });
+
             $log.debug('Angular : photoBlog init\'d');
-            //TODO check for authentication on admin routes
         });
 });

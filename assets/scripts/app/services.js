@@ -29,10 +29,14 @@ define([
             function logout(){
                 return $http.get('/api/user/logout');
             }
+            function check(){
+                return $http.get('/api/user/check');
+            }
 
             return {
                 login : login,
-                logout : logout
+                logout : logout,
+                check : check
             };
         })
 
@@ -63,17 +67,39 @@ define([
                 },
                 function(error){
                     messageService.setMessage({type:"alert", message: "No Photos by that ID(s)"});
-                    deferred.resolve(error.data);
                     return deferred.promise;
                 });
             }
 
             function deletePhoto(photoID){
-                return $http.get('/api/photos/delete/' + photoID)
+                var deferred = $q.defer();
+
+                return $http.get('/api/photos/delete/' + photoID).then(
+                    function(response){
+                        service.photos = response.data;
+                        deferred.resolve(response.data);
+                        return deferred.promise;
+                    },
+                    function(error) {
+                        messageService.setMessage({type:"alert", message: error.data});
+                        return deferred.promise;
+                    }
+                )
             }
 
             function addPhotoToCollection(IDs){
-                return $http.post('/api/photos/add-collection', IDs)
+                var deferred = $q.defer();
+
+                return $http.post('/api/photos/add-collection', IDs).then(
+                    function(response){
+                        deferred.resolve(response.data);
+                        return deferred.promise;
+                    },
+                    function(error) {
+                        messageService.setMessage({type:"alert", message: error.data});
+                        return deferred.promise;
+                    }
+                )
             }
 
             return service;
@@ -140,5 +166,20 @@ define([
                 }
             }
         })
+
+        .factory('myHttpInterceptor', ['$q', '$location', function($q, $location) {
+            return {
+                response: function(response) {
+                    return response;
+                },
+                responseError: function(response) {
+                    if (response.status === 401) {
+                        $location.path('/login');
+                        return $q.reject(response);
+                    }
+                    return $q.reject(response);
+                }
+            };
+        }]);
 });
 

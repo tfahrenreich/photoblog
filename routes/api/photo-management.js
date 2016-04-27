@@ -38,6 +38,8 @@ router.get('/', function(request, response){
     }
 });
 
+/** PROTECTED ROUTES */
+
 router.post('/add', sessionCheck, imageUpload, function(request, response){
     var photos = [], i;
 

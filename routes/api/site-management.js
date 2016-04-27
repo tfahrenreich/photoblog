@@ -12,6 +12,17 @@ var express = require('express'),
 var Site = require('../../models/site.js');
 
 /* SITE MANAGEMENT*/
+router.get('/info', function(request, response){
+    return Site.findOne({
+        _id : "siteData"
+    }, function(err, data){
+        if (err || data == null) return response.status(404).send('SiteData not found! Set it up!');
+        return response.status(200).send(data);
+    });
+});
+
+/** PROTECTED ROUTES */
+
 router.post('/set', sessionCheck, function(request, response){
     var site = new Site({
         _id: "siteData",
@@ -32,15 +43,6 @@ router.post('/set', sessionCheck, function(request, response){
         }).exec();
         response.status(200).send(site);
     })
-});
-
-router.get('/info', function(request, response){
-    return Site.findOne({
-        _id : "siteData"
-    }, function(err, data){
-        if (err || data == null) return response.status(404).send('SiteData not found! Set it up!');
-        return response.status(200).send(data);
-    });
 });
 
 function sessionCheck(request,response,next){

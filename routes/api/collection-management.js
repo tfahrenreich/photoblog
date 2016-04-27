@@ -12,7 +12,7 @@ var express = require('express'),
 /* MODELS */
 var Collection = require('../../models/collection.js');
 
-/* PHOTO MANAGEMENT*/
+/* COLLECTION MANAGEMENT*/
 router.get('/', function(request, response) {
     return Collection.find(function(err, collections) {
         if (!err) {
@@ -23,7 +23,7 @@ router.get('/', function(request, response) {
     });
 });
 
-router.get('/get/:id', sessionCheck, function(request, response) {
+router.get('/get/:id', function(request, response) {
     var id = request.params.id;
     Collection.find({
         _id: id
@@ -33,6 +33,7 @@ router.get('/get/:id', sessionCheck, function(request, response) {
     })
 });
 
+/** PROTECTED */
 router.post('/add', sessionCheck, function(request, response){
     var collection = new Collection({
         name: request.body.name,
