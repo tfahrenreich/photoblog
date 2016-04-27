@@ -1,0 +1,18 @@
+@import(reference) "mixins.less";
+
+.image-list [ng-repeat]{
+  &.ng-leave{
+    .keyframes(enter;{
+      0% {.transform(rotateY(0deg));}
+      100% { .transform(rotateY(90deg));}
+    });
+    .animation(enter 0.5s)
+  }
+  &.ng-enter{
+    .keyframes(exit;{
+      0% { .transform(rotateX(90deg));}
+      100% {.transform(rotateX(0deg));}
+    });
+    .animation(exit 0.5s)
+  }
+}
