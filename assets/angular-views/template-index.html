@@ -5,7 +5,9 @@
                 <div class="panel">
                     <h6>Collections</h6>
                     <ul class="no-bullet">
-                        <li ng-repeat="collection in allCollections"><a href="/collections/{{collection._id}}">{{collection.name}}</a></li>
+                        <li ng-repeat="collection in allCollections">
+                            <a href="/collections/{{collection._id}}">{{collection.name}}</a>
+                        </li>
                     </ul>
                 </div>
             </div>

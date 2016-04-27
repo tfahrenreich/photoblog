@@ -5,21 +5,25 @@ define([
     'app/app'
 ], function(filters) {
     filters
-        .filter('collectionFiler', function() {
+        .filter('collectionFilter', function() {
             'use strict';
-            return function(photos, collectionID) {
-                if (collectionID === (undefined||'none')) return photos;
-
+            return function(photos,findInID, notInID) {
                 var filtered = [];
+                if (findInID === "false" && !notInID) return photos;
+
                 photos.forEach(function(photo){
-                    if(collectionID === 'notincollection' && photo.collections.length === 0){
+                    var findIn = photo.collections.find(function(collections){
+                        return(findInID === collections._id)
+                    });
+                    
+                    var notIn = photo.collections.find(function(collections){
+                        return(notInID === collections._id)
+                    });
+
+                    if(findInID === 'notincollection' && photo.collections.length === 0){
                         filtered.push(photo);
                     }else{
-                        var found = photo.collections.find(function(collections){
-                            return(collectionID === collections._id)
-                        });
-
-                        if(found)filtered.push(photo);
+                        if((findIn && !notIn) || (findInID === "false" && !notIn)) filtered.push(photo);
                     }
                 });
                 return filtered;

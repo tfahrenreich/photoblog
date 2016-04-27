@@ -23,11 +23,7 @@
         <div class="row">
             <div class="small-12 small-centered column collection-menu">
                     <div class="panel">
-                            <select ng-model="photoFilter" ng-init="photoFilter = 'none'">
-                                <option value="none">Filter by Collection</option>
-                                <option value="notincollection">Not in a Collection</option>
-                                <option ng-repeat="collection in allCollections" ng-value="collection._id">{{collection.name}}</option>
-                            </select>
+                        <collection-filter></collection-filter>
                         <a href="/admin/collections">Collections</a>
                     </div>
             </div>
@@ -35,7 +31,7 @@
 
         <div class="row">
             <div class="small-up-2 medium-up-4 large-up-5 image-list">
-                <div ng-repeat="photo in allPhotos  | collectionFiler: photoFilter" class="column">
+                <div ng-repeat="photo in allPhotos  | collectionFilter: photoFilter:false" class="column">
                     <div class="panel">
                         <img src="{{photo.files.thumb}}">
                         <h6>{{photo.title}}</h6>

@@ -56,6 +56,16 @@ define([
                 });
             };
         })
+        .directive('imagePreview', function (){
+            return {
+                restrict: 'E',
+                templateUrl: '/assets/angular-views/directive-image-preview.html',
+                transclude: true,
+                link: function($scope, element, attrs){
+
+                }
+            }
+        })
         .directive('collectionView', function(){
             return{
                 restrict: 'E',
@@ -66,6 +76,12 @@ define([
             return{
                 restrict: 'E',
                 templateUrl: '/assets/angular-views/directive-view-index.html'
+            }
+        })
+        .directive('collectionFilter', function(){
+            return{
+                restrict: 'E',
+                templateUrl: '/assets/angular-views/directive-collection-filter.html'
             }
         });
 });

@@ -6,13 +6,14 @@ define([
     'app/app'
 ], function(controllers){
     controllers
-        .controller("AppContainerCtrl", function($scope, $log, appData){
+        .controller("AppContainerCtrl", function($scope, $log, appData, messageService){
             $scope.getData = function(){
                 appData.getData().then(
                     function(response){
                         $scope.appData = response.data
                     },
                     function(error){
+                        messageService.setMessage({type:'alert', message: error.data});
                         $log.error(error)
                     });
             };
@@ -25,7 +26,6 @@ define([
         })
 
         .controller("IndexCtrl", function($scope, $log, photoService, collectionService){
-            $scope.allPhotos = photoService.photos;
             $scope.allCollections = collectionService.collections;
             $scope.collection = collectionService.populatedCollection;
         })
@@ -81,16 +81,17 @@ define([
             };
         })
 
-        .controller("AdminCollectionCtrl", function($scope, $log, collectionService, messageService){
-            $scope.collections = collectionService.collections;
-
+        .controller("AdminCollectionCtrl", function($scope, $log, collectionService, photoService, messageService){
+            $scope.allPhotos = photoService.photos;
+            $scope.allCollections = collectionService.collections;
+            $scope.collection = collectionService.populatedCollection;
             $scope.newCollection = {};
 
             $scope.addCollection = function(){
                 collectionService.addCollection($scope.newCollection).then(
                     function(response){
                         messageService.setMessage({type:"success", message: $scope.newCollection.name+" Created"});
-                        $scope.collections.push(response.data);
+                        $scope.allCollections.push(response.data);
                         $scope.newCollection = {};
                     },
                     function(error){

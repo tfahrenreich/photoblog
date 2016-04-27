@@ -18,9 +18,6 @@ define([
                 templateUrl: '/assets/angular-views/template-index.html',
                 controller: 'IndexCtrl',
                 resolve: {
-                    photos: function ($route, photoService) {
-                        return photoService.loadPhotos();
-                    },
                     collections: function (collectionService) {
                         collectionService.populatedCollection = false;
                         return collectionService.loadCollections();
@@ -74,8 +71,26 @@ define([
                 templateUrl: '/assets/angular-views/template-admin-collections.html',
                 controller: 'AdminCollectionCtrl',
                 resolve: {
+                    photos: function ($route, photoService) {
+                        return photoService.loadPhotos();
+                    },
                     collections: function (collectionService) {
                         return collectionService.loadCollections();
+                    }
+                }
+            });
+            $routeProvider.when('/admin/collections/:id', {
+                templateUrl: '/assets/angular-views/template-admin-collections.html',
+                controller: 'AdminCollectionCtrl',
+                resolve: {
+                    photos: function ($route, photoService) {
+                        return photoService.loadPhotos();
+                    },
+                    collections: function (collectionService) {
+                        return collectionService.loadCollections();
+                    },
+                    loadCollection: function($route, collectionService){
+                        return collectionService.loadPopulatedCollection($route.current.params.id)
                     }
                 }
             });

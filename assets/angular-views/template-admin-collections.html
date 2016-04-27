@@ -1,22 +1,35 @@
 <div class="row">
     <div class="small-12 small-centered column">
-        <a href="javascript:history.back()">Go Back</a>
+        <a href="/admin">Admin Home</a>
     </div>
 </div>
-<div class="row">
-    <div class="small-3 column collection-list">
+<div class="row collections-admin">
+    <div class="small-3 column">
         <div class="panel">
+            <h6>Collections</h6>
             <form ng-submit="addCollection()">
-                <input type="text" placeholder="Add Collection" ng-model="newCollection.name"/>
+                <input type="text" placeholder="Create New Collection" ng-model="newCollection.name"/>
             </form>
             <ul class="no-bullet">
-                <li ng-repeat="collection in collections">
-                    {{collection.name}}
+                <li ng-repeat="collection in allCollections">
+                    <a href="/admin/collections/{{collection._id}}">{{collection.name}}</a>
                 </li>
             </ul>
         </div>
     </div>
-    <div class="small-9 column">
-        sup upsups
+    <div class="small-6 column">
+        <collection-view ng-show="collection"></collection-view>
+    </div>
+    <div class="small-3 column">
+        <div class="panel">
+            <h6>Add Photos to Collection</h6>
+            <collection-filter></collection-filter>
+            <ul class="no-bullet">
+                <li ng-repeat="photo in allPhotos | collectionFilter: photoFilter:collection._id">
+                    <image-preview image="{{photo.files.small}}">{{photo.title}}</image-preview>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
+
