@@ -6,11 +6,11 @@ define([
     'app/app'
 ], function(controllers){
     controllers
-        .controller("AppContainerCtrl", function($scope, $log, appData, messageService){
+        .controller("AppContainerCtrl", function($scope, $rootScope, $log, appData, messageService){
             $scope.getData = function(){
                 appData.getData().then(
                     function(response){
-                        $scope.appData = response.data
+                        $rootScope.appData = response.data
                     },
                     function(error){
                         messageService.setMessage({type:'alert', message: error.data});
@@ -25,9 +25,17 @@ define([
             $scope.getData();
         })
 
-        .controller("IndexCtrl", function($scope, $log, photoService, collectionService){
+        .controller("IndexCtrl", function($scope, $rootScope, $log, photoService, collectionService){
             $scope.allCollections = collectionService.collections;
             $scope.collection = collectionService.populatedCollection;
+
+            photoService.set(0, $scope.collection._id);
+            $scope.loadPage = function(){
+                photoService.loadRange().then(function(){
+                    $scope.photos = photoService.photos;
+                });
+            };
+            $scope.loadPage()
         })
 
         .controller("AdminLoginCtrl", function($scope, $location, $cookies, authService, $log, messageService){
@@ -52,7 +60,6 @@ define([
         })
 
         .controller("AdminCtrl", function($scope, $log, appData, messageService, photoService, collectionService){
-            $scope.allPhotos = photoService.photos;
             $scope.allCollections = collectionService.collections;
             $scope.siteDataForm = {};
 
@@ -68,6 +75,15 @@ define([
                     }
                 );
             };
+
+            photoService.set(0, null, 10);
+            $scope.loadPage = function(){
+                photoService.loadRange().then(function(){
+                    $scope.photos = photoService.photos;
+                });
+            };
+            $scope.loadPage();
+
             $scope.deletePhoto = function(photo) {
                 photoService.deletePhoto(photo._id).then(
                     function(response){
@@ -98,7 +114,16 @@ define([
 
                     }
                 )
-            }
+            };
+
+            photoService.set(0, $scope.collection._id);
+            $scope.loadPage = function(){
+                photoService.loadRange().then(function(){
+                    $scope.photos = photoService.photos;
+                });
+            };
+
+            if($scope.collection._id)$scope.loadPage();
         })
 
         .controller("AdminPhotoCtrl", function($scope, $log, photoService, messageService, $routeParams, collectionService){

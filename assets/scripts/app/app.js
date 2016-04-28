@@ -30,9 +30,6 @@ define([
                 templateUrl: '/assets/angular-views/template-index.html',
                 controller: 'IndexCtrl',
                 resolve: {
-                    photos: function ($route, photoService) {
-                        return photoService.loadPhotos();
-                    },
                     collections: function (collectionService) {
                         return collectionService.loadCollections();
                     },
@@ -49,9 +46,6 @@ define([
                 templateUrl: '/assets/angular-views/template-admin-index.html',
                 controller: 'AdminCtrl',
                 resolve: {
-                    photos: function ($route, photoService) {
-                        return photoService.loadPhotos();
-                    },
                     collections: function (collectionService) {
                         return collectionService.loadCollections();
                     }
@@ -102,10 +96,9 @@ define([
             $locationProvider.html5Mode(true);
         })
         .run(function($log, $rootScope ,authService, $location, $routeParams){
-            $rootScope.$on('$locationChangeStart', function(event) {
+            $rootScope.$on('$locationChangeStart', function() {
                 if(String($location.path()).includes('/admin')) authService.check()
             });
-
             $log.debug('Angular : photoBlog init\'d');
         });
 });

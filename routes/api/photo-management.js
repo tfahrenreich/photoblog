@@ -38,6 +38,25 @@ router.get('/', function(request, response){
     }
 });
 
+router.get('/page', function(request, response){
+    var from = parseInt(request.query.from),
+        to = parseInt(request.query.to),
+        collection = request.query.collection;
+
+    if(!isNaN(request.query.from) && !isNaN(request.query.to)){
+        var Find = (collection == undefined) ? Photo.find() : Photo.find({ 'collections' : { $in : [collection] }});
+
+        return Find.limit(to-from).skip(from).populate('collections').exec(
+            function(error, photos){
+                if (error) return response.status(500).send(error);
+                return response.status(200).send(photos);
+            }
+        );
+    }else{
+        return response.status(500).send("bad request fam");
+    }
+});
+
 /** PROTECTED ROUTES */
 
 router.post('/add', sessionCheck, imageUpload, function(request, response){

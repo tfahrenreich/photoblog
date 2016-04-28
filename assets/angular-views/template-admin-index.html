@@ -22,16 +22,16 @@
     <div class="small-10 column small-centered">
         <div class="row">
             <div class="small-12 small-centered column collection-menu">
-                    <div class="panel">
-                        <collection-filter></collection-filter>
-                        <a href="/admin/collections">Collections</a>
-                    </div>
+                <div class="panel">
+                    <collection-filter></collection-filter>
+                    <a href="/admin/collections">Collections</a>
+                </div>
             </div>
         </div>
 
         <div class="row">
             <div class="small-up-2 medium-up-4 large-up-5 image-list">
-                <div ng-repeat="photo in allPhotos  | collectionFilter: photoFilter:false" class="column">
+                <div ng-repeat="photo in photos | collectionFilter: photoFilter:false" class="column">
                     <div class="panel">
                         <img src="{{photo.files.thumb}}">
                         <h6>{{photo.title}}</h6>
@@ -45,6 +45,11 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="small-12 column">
+                <a class="button expanded" ng-click="loadPage()">Load More</a>
             </div>
         </div>
     </div>

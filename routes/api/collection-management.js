@@ -27,7 +27,7 @@ router.get('/get/:id', function(request, response) {
     var id = request.params.id;
     Collection.find({
         _id: id
-    }).populate('photos').exec(function(error, collection){
+    })/*.populate('photos')*/.exec(function(error, collection){
         if(error) response.status(500).send(error);
         return response.status(200).send(collection)
     })

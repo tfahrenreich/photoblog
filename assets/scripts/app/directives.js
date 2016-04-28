@@ -72,10 +72,10 @@ define([
                 templateUrl: '/assets/angular-views/directive-view-collection.html'
             }
         })
-        .directive('indexView', function(){
+        .directive('pageView', function(){
             return{
                 restrict: 'E',
-                templateUrl: '/assets/angular-views/directive-view-index.html'
+                templateUrl: '/assets/angular-views/directive-view-page.html'
             }
         })
         .directive('collectionFilter', function(){

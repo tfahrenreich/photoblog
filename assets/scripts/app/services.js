@@ -40,14 +40,44 @@ define([
             };
         })
 
-        .factory('photoService', function ($http, $q, messageService){
+        .factory('photoService', function ($http, $q, $rootScope, messageService){
+            var parameters, 
+                service = {
+                    photos: [],
+                    set: set,
+                    loadRange:loadRange,
+                    addPhotoToCollection: addPhotoToCollection,
+                    loadPhotos : loadPhotos,
+                    deletePhoto : deletePhoto
+                };
 
-            var service = {
-                photos: [],
-                addPhotoToCollection: addPhotoToCollection,
-                loadPhotos : loadPhotos,
-                deletePhoto : deletePhoto
-            };
+            function set(from, collection_id, override){
+                service.photos = [];
+                parameters = [from, collection_id, override];
+            }
+
+            function loadRange(range){
+                var deferred = $q.defer();
+                var postPerPage = parameters[2] || $rootScope.appData.pages;
+
+                return $http.get('/api/photos/page', {
+                    params: {
+                        from: parameters[0],
+                        to: (parameters[0] + postPerPage) ,
+                        collection: parameters[1]
+                    }
+                }).then(
+                function(response){
+                    service.photos = service.photos.concat(response.data);
+                    parameters[0] += postPerPage;
+                    deferred.resolve(response.data);
+                    return deferred.promise;
+                },
+                function(error){
+                    messageService.setMessage({type:"alert", message: error});
+                    return deferred.promise;
+                });
+            }
 
             function loadPhotos(photoID){
                 var deferred = $q.defer();

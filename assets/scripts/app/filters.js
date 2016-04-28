@@ -6,16 +6,15 @@ define([
 ], function(filters) {
     filters
         .filter('collectionFilter', function() {
-            'use strict';
             return function(photos,findInID, notInID) {
                 var filtered = [];
-                if (findInID === "false" && !notInID) return photos;
+                if (findInID === "false" && !notInID || !angular.isObject(photos)) return photos;
 
                 photos.forEach(function(photo){
                     var findIn = photo.collections.find(function(collections){
                         return(findInID === collections._id)
                     });
-                    
+
                     var notIn = photo.collections.find(function(collections){
                         return(notInID === collections._id)
                     });
@@ -29,5 +28,4 @@ define([
                 return filtered;
             }
         });
-
 });

@@ -1,0 +1,8 @@
+<div ng-repeat="photo in photos" class="row">
+    <div class="small-12 columns">
+        <img src="{{photo.files.large}}">
+    </div>
+</div>
+<div class="row">
+    <a class="button expanded" ng-click="loadPage()">Load More</a>
+</div>

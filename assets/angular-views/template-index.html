@@ -12,8 +12,8 @@
                 </div>
             </div>
             <div class="columns" ng-class="{'small-12 medium-8 large-9':!collection, 'small-12': collection}">
-                <index-view ng-hide="collection"></index-view>
-                <collection-view ng-show="collection"></collection-view>
+                <h3 ng-show="collection">{{collection.name}}</h3>
+                <page-view></page-view>
             </div>
         </div>
     </div>
