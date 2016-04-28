@@ -44,33 +44,31 @@ define([
             var parameters, 
                 service = {
                     photos: [],
-                    set: set,
                     loadRange:loadRange,
                     addPhotoToCollection: addPhotoToCollection,
                     loadPhotos : loadPhotos,
                     deletePhoto : deletePhoto
                 };
 
-            function set(from, collection_id, override){
-                service.photos = [];
-                parameters = [from, collection_id, override];
-            }
+            function loadRange(from, collection_id, override){
 
-            function loadRange(range){
                 var deferred = $q.defer();
-                var postPerPage = parameters[2] || $rootScope.appData.pages;
+                var postPerPage = override || $rootScope.appData.pages;
 
                 return $http.get('/api/photos/page', {
                     params: {
-                        from: parameters[0],
-                        to: (parameters[0] + postPerPage) ,
-                        collection: parameters[1]
+                        from: from,
+                        to: (from + postPerPage) ,
+                        collection: collection_id
                     }
                 }).then(
                 function(response){
-                    service.photos = service.photos.concat(response.data);
-                    parameters[0] += postPerPage;
-                    deferred.resolve(response.data);
+                    var newStart = (from + postPerPage);
+
+                    deferred.resolve({
+                        photos: response.data,
+                        startFrom: newStart
+                    });
                     return deferred.promise;
                 },
                 function(error){

@@ -28,11 +28,14 @@ define([
         .controller("IndexCtrl", function($scope, $rootScope, $log, photoService, collectionService){
             $scope.allCollections = collectionService.collections;
             $scope.collection = collectionService.populatedCollection;
+            $scope.photos = [];
 
-            photoService.set(0, $scope.collection._id);
+            $scope.lastPost = 0;
             $scope.loadPage = function(){
-                photoService.loadRange().then(function(){
-                    $scope.photos = photoService.photos;
+                photoService.loadRange($scope.lastPost,$scope.collection._id).then(
+                    function(response){
+                    $scope.lastPost = response.startFrom;
+                    $scope.photos = $scope.photos.concat(response.photos)
                 });
             };
             $scope.loadPage()
@@ -62,6 +65,7 @@ define([
         .controller("AdminCtrl", function($scope, $log, appData, messageService, photoService, collectionService){
             $scope.allCollections = collectionService.collections;
             $scope.siteDataForm = {};
+            $scope.photos = [];
 
             $scope.updateSiteInfo = function(){
                 appData.setData($scope.siteDataForm).then(
@@ -76,11 +80,13 @@ define([
                 );
             };
 
-            photoService.set(0, null, 10);
+            $scope.lastPost = 0;
             $scope.loadPage = function(){
-                photoService.loadRange().then(function(){
-                    $scope.photos = photoService.photos;
-                });
+                photoService.loadRange($scope.lastPost, null, 20).then(
+                    function(response){
+                        $scope.lastPost = response.startFrom;
+                        $scope.photos = $scope.photos.concat(response.photos)
+                    });
             };
             $scope.loadPage();
 
@@ -98,10 +104,10 @@ define([
         })
 
         .controller("AdminCollectionCtrl", function($scope, $log, collectionService, photoService, messageService){
-            $scope.allPhotos = photoService.photos;
             $scope.allCollections = collectionService.collections;
             $scope.collection = collectionService.populatedCollection;
             $scope.newCollection = {};
+            $scope.photos = [];
 
             $scope.addCollection = function(){
                 collectionService.addCollection($scope.newCollection).then(
@@ -116,13 +122,14 @@ define([
                 )
             };
 
-            photoService.set(0, $scope.collection._id);
+            $scope.lastPost = 0;
             $scope.loadPage = function(){
-                photoService.loadRange().then(function(){
-                    $scope.photos = photoService.photos;
-                });
+                photoService.loadRange($scope.lastPost,$scope.collection._id).then(
+                    function(response){
+                        $scope.lastPost = response.startFrom;
+                        $scope.photos = $scope.photos.concat(response.photos)
+                    });
             };
-
             if($scope.collection._id)$scope.loadPage();
         })
 
