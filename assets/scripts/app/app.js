@@ -13,7 +13,6 @@ define([
 ], function(){
     return angular.module("photoBlog", ['ngRoute', 'ngResource', 'ngCookies', 'ngAnimate'])
         .config(function($routeProvider, $locationProvider, $httpProvider) {
-            //TODO: protected routes
             $httpProvider.interceptors.push('myHttpInterceptor');
 
             $routeProvider.when('/', {

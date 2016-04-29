@@ -107,6 +107,7 @@ define([
             $scope.allCollections = collectionService.collections;
             $scope.collection = collectionService.populatedCollection;
             $scope.newCollection = {};
+            $scope.allPhotos = [];
             $scope.photos = [];
 
             $scope.addCollection = function(){
@@ -131,6 +132,16 @@ define([
                     });
             };
             if($scope.collection._id)$scope.loadPage();
+
+            $scope.allPhotosLoaded = 0;
+            $scope.loadAllPage = function(){
+                photoService.loadRange($scope.allPhotosLoaded, null, 25).then(
+                    function(response){
+                        $scope.allPhotosLoaded = response.startFrom;
+                        $scope.allPhotos = $scope.allPhotos.concat(response.photos)
+                    });
+            };
+            if($scope.collection._id)$scope.loadAllPage();
         })
 
         .controller("AdminPhotoCtrl", function($scope, $log, photoService, messageService, $routeParams, collectionService){

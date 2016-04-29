@@ -53,7 +53,7 @@ define([
             function loadRange(from, collection_id, override){
 
                 var deferred = $q.defer();
-                var postPerPage = override || $rootScope.appData.pages;
+                var postPerPage = override || $rootScope.appData.pages || 10;
 
                 return $http.get('/api/photos/page', {
                     params: {
