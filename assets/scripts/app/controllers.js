@@ -30,6 +30,7 @@ define([
             $scope.collection = collectionService.populatedCollection;
             $scope.photos = [];
 
+            // Infinite scroll
             $scope.lastPost = 0;
             $scope.loadPage = function(){
                 photoService.loadRange($scope.lastPost,$scope.collection._id).then(
@@ -106,6 +107,7 @@ define([
         .controller("AdminCollectionCtrl", function($scope, $log, collectionService, photoService, messageService){
             $scope.allCollections = collectionService.collections;
             $scope.collection = collectionService.populatedCollection;
+
             $scope.newCollection = {};
             $scope.allPhotos = [];
             $scope.photos = [];
@@ -142,6 +144,22 @@ define([
                     });
             };
             if($scope.collection._id)$scope.loadAllPage();
+
+            $scope.addToCollection = function(photo){
+                photoService.addPhotoToCollection({
+                    photo: photo._id,
+                    collection: $scope.collection._id
+                }).then(function(response){
+                    //create pseudo collection obj
+                    var collection = {_id: $scope.collection._id };
+                    photo.collections.push(collection);
+                    $scope.collection.photos.push(photo._id);
+                    $scope.photos.push(photo)
+                },function(error){
+
+                });
+
+            }
         })
 
         .controller("AdminPhotoCtrl", function($scope, $log, photoService, messageService, $routeParams, collectionService){

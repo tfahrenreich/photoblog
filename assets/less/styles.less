@@ -34,6 +34,7 @@ h1.title{
 
 .button{
   .header-font;
+  background-color: @highlight;
 }
 
 .app-data-panel{
@@ -76,4 +77,38 @@ h1.title{
   }
 }
 
+image-preview,
+[image-preview]{
+  position: relative;
+  display: inline-block;
+  .preview-box.panel{
+    display: none;
+    background-color: @mute;
+    position: absolute;
+    width: 170px;
+    z-index: 1;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+image-preview,
+[image-preview],
+.collection-list li{
+  & *{.transition(ease .3s);}
+
+  &:hover,
+  &.selected{
+    .preview-box.panel{
+      display: block
+    }
+    span{
+      .border-radius(1rem);
+      color: @white;
+      background: @highlight;
+      padding: 0.2rem 0.6rem;;
+    }
+  }
+}
 @import "animations.less";

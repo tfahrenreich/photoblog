@@ -1,7 +1,7 @@
 <div class="row home-index">
     <div class="small-10 small-centered column">
         <div class="row">
-            <div class="small-12 medium-4 large-3 column" ng-hide="collection">
+            <div class="small-12 medium-4 large-3 column" ng-hide="collection._id">
                 <div class="panel">
                     <h6>Collections</h6>
                     <ul class="no-bullet">
@@ -11,7 +11,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="columns" ng-class="{'small-12 medium-8 large-9':!collection, 'small-12': collection}">
+            <div class="columns" ng-class="{'small-12 medium-8 large-9':!collection._id, 'small-12': collection._id}">
                 <h3 ng-show="collection">{{collection.name}}</h3>
                 <page-view></page-view>
             </div>

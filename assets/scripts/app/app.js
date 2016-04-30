@@ -30,6 +30,7 @@ define([
                 controller: 'IndexCtrl',
                 resolve: {
                     collections: function (collectionService) {
+                        //todo: check if data exist before resolving every time
                         return collectionService.loadCollections();
                     },
                     loadCollection: function($route, collectionService){
@@ -96,6 +97,7 @@ define([
         })
         .run(function($log, $rootScope ,authService, $location, $routeParams){
             $rootScope.$on('$locationChangeStart', function() {
+                // Checks authorization for admin urls
                 if(String($location.path()).includes('/admin')) authService.check()
             });
             $log.debug('Angular : photoBlog init\'d');

@@ -26,7 +26,6 @@ define([
                 templateUrl: '/assets/angular-views/directive-message-service.html'
             }
         })
-
         .directive('collectionAutoComplete', function($timeout) {
             return function($scope, element, attrs) {
                 $(element).autocomplete({
@@ -62,7 +61,16 @@ define([
                 templateUrl: '/assets/angular-views/directive-image-preview.html',
                 transclude: true,
                 link: function($scope, element, attrs){
-
+                    $(element).click(function(){
+                        $(element).slideUp();
+                    });
+                    $(element).mouseover(function(event){
+                        $(this).append("" +
+                            "<div class='preview-box panel'>" +
+                            "<img src='"+attrs.image+"'>" +
+                            "</div>");
+                        $(this).unbind(event);
+                    })
                 }
             }
         })

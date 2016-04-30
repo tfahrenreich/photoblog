@@ -10,15 +10,16 @@
             <form ng-submit="addCollection()">
                 <input type="text" placeholder="Create New Collection" ng-model="newCollection.name"/>
             </form>
-            <ul class="no-bullet">
-                <li ng-repeat="collection in allCollections">
-                    <a href="/admin/collections/{{collection._id}}">{{collection.name}}</a>
+            <ul class="no-bullet collection-list">
+                <li ng-repeat="collectionli in allCollections" ng-class="{'selected sdf':collectionli._id === collection._id}">
+                    <a href="/admin/collections/{{collectionli._id}}"><span>{{collectionli.name}}</span></a>
                 </li>
             </ul>
         </div>
     </div>
     <div class="small-6 column">
-        <h3 ng-show="collection">{{collection.name}}</h3>
+        <h5 ng-hide="collection._id">Choose a collection!</h5>
+        <h3 ng-show="collection._id">{{collection.name}}</h3>
         <page-view></page-view>
     </div>
     <div class="small-3 column">
@@ -27,7 +28,7 @@
             <collection-filter></collection-filter>
             <ul class="no-bullet">
                 <li ng-repeat="photo in allPhotos | collectionFilter: photoFilter:collection._id">
-                    <image-preview image="{{photo.files.small}}">{{photo.title}}</image-preview>
+                    <image-preview image="{{photo.files.small}}" ng-click="addToCollection(photo)">{{photo.title}}</image-preview>
                 </li>
             </ul>
             <a class="button tiny expanded" ng-click="loadAllPage()">show more</a>
