@@ -46,7 +46,7 @@ router.get('/page', function(request, response){
     if(!isNaN(request.query.from) && !isNaN(request.query.to)){
         var Find = (collection == undefined) ? Photo.find() : Photo.find({ 'collections' : { $in : [collection] }});
 
-        return Find.limit(to-from).skip(from).populate('collections').exec(
+        return Find.sort('-date').limit(to-from).skip(from).populate('collections').exec(
             function(error, photos){
                 if (error) return response.status(500).send(error);
                 return response.status(200).send(photos);

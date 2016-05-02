@@ -1,6 +1,13 @@
 <div ng-repeat="photo in photos" class="row">
     <div class="small-12 columns">
-        <img src="{{photo.files.large}}">
+        <div class="post-container">
+            <a href="/">
+                <span class="corner"></span>
+                <h6 class="title">{{photo.title}}</h6>
+                <img src="{{photo.files.large}}">
+                <p class="date">Posted {{photo.date | isoDate}}</p>
+            </a>
+        </div>
     </div>
 </div>
 <div class="row">

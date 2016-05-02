@@ -3,6 +3,7 @@
 @grey: #D4D4D4;
 @white: #FFFFFF;
 @dark: #0a0a0a;
+@dark-overlay: rgba(10, 10, 10, 0.5);
 @highlight: #008080;
 
 .header-font(){
@@ -10,7 +11,7 @@
   text-transform: uppercase;
 }
 
-.transition(@transition: .3s){
+.transition(@transition: .3s ease){
   -webkit-transition: @transition;
   -moz-transition: @transition;
   -ms-transition: @transition;
@@ -22,6 +23,7 @@
   padding: .8rem;
   background: @background-color;
   margin-bottom: @margin-bottom;
+  .border-radius();
 }
 
 .text-shadow (@string: 0 1px 3px rgba(0, 0, 0, 0.25)) {
@@ -53,10 +55,6 @@
   -webkit-border-radius: @radius;
   -moz-border-radius:    @radius;
   border-radius:         @radius;
-
-  -moz-background-clip:    padding;
-  -webkit-background-clip: padding-box;
-  background-clip:         padding-box;
 }
 .border-radiuses (@topright: 0, @bottomright: 0, @bottomleft: 0, @topleft: 0) {
   -webkit-border-top-right-radius:    @topright;

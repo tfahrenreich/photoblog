@@ -95,7 +95,7 @@ image-preview,
 
 image-preview,
 [image-preview],
-.collection-list li{
+.collection-list li a{
   & *{.transition(ease .3s);}
 
   &:hover,
@@ -111,4 +111,41 @@ image-preview,
     }
   }
 }
+
+.post-container{
+  position: relative;
+  .title{
+    color: @white;
+    padding: 0.8rem 1rem .4rem;
+  }
+  .date{
+    .header-font;
+    text-align: right;
+    color: @dark-overlay;
+    text-transform: uppercase;
+    padding: 0 0.8rem;
+    .transition();
+    &:hover{
+      color: @dark;
+    }
+  }
+  .corner{
+    border-color: @white @white transparent transparent;
+    border-style: solid;
+    position: absolute;
+    border-width: 12px;
+    background: @dark-overlay;
+    display: block;
+    height: 0;
+    width: 0;
+    right: 0;
+    top: 0;
+    .border-radius(0 0 0 5px);
+  }
+  margin-bottom: 2rem;
+  background: @highlight;
+  color: @white;
+  .border-radius;
+}
+
 @import "animations.less";

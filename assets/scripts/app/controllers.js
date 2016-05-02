@@ -104,7 +104,7 @@ define([
             };
         })
 
-        .controller("AdminCollectionCtrl", function($scope, $log, collectionService, photoService, messageService){
+        .controller("AdminCollectionCtrl", function($scope,$location, $log, collectionService, photoService, messageService){
             $scope.allCollections = collectionService.collections;
             $scope.collection = collectionService.populatedCollection;
 
@@ -118,6 +118,7 @@ define([
                         messageService.setMessage({type:"success", message: $scope.newCollection.name+" Created"});
                         $scope.allCollections.push(response.data);
                         $scope.newCollection = {};
+                        $location.path('/admin/collections/'+response.data._id);
                     },
                     function(error){
 
