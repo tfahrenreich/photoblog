@@ -112,6 +112,12 @@
   -ms-transform: 		 @string;
   -o-transform: 		 @string;
 }
+.transform-style(@string: preserve-3d) {
+  -webkit-transform-style: @string;
+  -moz-transform-style: @string;
+  -ms-transform-style: @string;
+  transform-style: @string;
+}
 .scale (@factor) {
   -webkit-transform: scale(@factor);
   -moz-transform: 	 scale(@factor);

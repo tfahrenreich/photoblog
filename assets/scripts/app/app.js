@@ -99,6 +99,7 @@ define([
             $rootScope.$on('$locationChangeStart', function() {
                 // Checks authorization for admin urls
                 if(String($location.path()).includes('/admin')) authService.check()
+                scroll(0,0);
             });
             $log.debug('Angular : photoBlog init\'d');
         });
