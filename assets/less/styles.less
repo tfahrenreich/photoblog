@@ -1,4 +1,5 @@
 @import (inline, optional) url(https://fonts.googleapis.com/css?family=Oswald:400,700);
+@import (inline, optional) url(https://fonts.googleapis.com/css?family=Permanent+Marker);
 @import (inline) "foundation.min.css";
 @import (reference) "mixins.less";
 
@@ -11,6 +12,10 @@
 h1,h2,h3,h4,h5,h6{
   .header-font;
   .transition;
+  small{
+    line-height: 1.2;
+    color: @dark-overlay;
+  }
 }
 
 h1.title{
@@ -55,12 +60,45 @@ h1.title{
 }
 
 .image-list{
-  .panel{
-    .panel(@background-color: @grey;);
-    img{
-      width: 100%;
+  .photo-container{
+    .perspective();
+
+    .photo{
+      .transform-style();
+      .transition;
+      .front{
+        img{
+          width: 100%;
+        }
+        h6{
+          font-family: "Permanent Marker", "Comic Sans MS", sans-serif;
+        }
+      }
+      .back{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top:0;
+        left: 0;
+        .transform(rotateY(180deg));
+      }
+
+      .front, .back {
+        .panel(@background-color: @white; @border-radius: none);
+        .box-shadow(0px 5px 5px #888);
+        -webkit-backface-visibility: hidden;
+        -moz-backface-visibility: hidden;
+        -o-backface-visibility: hidden;
+        backface-visibility: hidden;
+      }
+    }
+
+    &.hover .photo,
+    &:hover .photo{
+      .transform(rotateY(180deg));
     }
   }
+
   .button{
     margin-bottom: 0;
   }
@@ -101,6 +139,7 @@ image-preview,
 
   &:hover,
   &.selected{
+    cursor: pointer;
     .preview-box.panel{
       display: block
     }

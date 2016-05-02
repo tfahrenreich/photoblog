@@ -1,46 +1,30 @@
-<div class="row">
-    <div class="small-10 column small-centered">
-        <div class="app-data-panel">
-            <h5>Site Data</h5>
-            <form ng-submit="updateSiteInfo()">
-                <div class="row collapse">
-                    <div class="small-9 columns">
-                        <label>
-                            <input type="text" ng-model="siteDataForm.name" name="text" placeholder="Site Name" required/>
-                        </label>
-                    </div>
-                    <div class="small-3 columns">
-                        <input class="button expanded" type="submit" id="submit" value="Submit" />
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
+<top-menu></top-menu>
 <div class="row">
     <div class="small-10 column small-centered">
         <div class="row">
             <div class="small-12 small-centered column collection-menu">
-                <div class="panel">
                     <collection-filter></collection-filter>
-                    <a href="/admin/collections">Collections</a>
-                </div>
             </div>
         </div>
 
         <div class="row">
             <div class="small-up-2 medium-up-4 large-up-5 image-list">
                 <div ng-repeat="photo in photos | collectionFilter: photoFilter:false" class="column">
-                    <div class="panel">
-                        <img src="{{photo.files.thumb}}">
-                        <h6>{{photo.title}}</h6>
-                        <div class="row collapse">
-                            <div class="small-6 column">
-                                <a ng-href="/admin/edit-photo/{{photo._id}}" class="button tiny expanded">view/edit</a>
+                    <div class="photo-container">
+                        <div class="photo">
+                            <div class="front">
+                                <img src="{{photo.files.thumb}}">
+                                <h6>{{photo.title}}</h6>
                             </div>
-                            <div class="small-6 column">
-                                <a ng-href="#" class="button tiny expanded" ng-click="deletePhoto(photo)">Delete</a>
+                            <div class="back">
+                                <div class="row collapse">
+                                    <div class="small-6 column">
+                                        <a ng-href="/admin/edit-photo/{{photo._id}}" class="button tiny expanded">view/edit</a>
+                                    </div>
+                                    <div class="small-6 column">
+                                        <a ng-href="#" class="button tiny expanded" ng-click="deletePhoto(photo)">Delete</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

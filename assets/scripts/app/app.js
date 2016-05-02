@@ -51,6 +51,10 @@ define([
                     }
                 }
             });
+            $routeProvider.when('/admin/site', {
+                templateUrl: '/assets/angular-views/template-admin-site.html',
+                controller: 'AdminSiteData'
+            });
             $routeProvider.when('/admin/edit-photo/:id', {
                 templateUrl: '/assets/angular-views/template-admin-photo.html',
                 controller: 'AdminPhotoCtrl',
@@ -67,10 +71,8 @@ define([
                 templateUrl: '/assets/angular-views/template-admin-collections.html',
                 controller: 'AdminCollectionCtrl',
                 resolve: {
-                    photos: function ($route, photoService) {
-                        return photoService.loadPhotos();
-                    },
                     collections: function (collectionService) {
+                        collectionService.populatedCollection = false;
                         return collectionService.loadCollections();
                     }
                 }

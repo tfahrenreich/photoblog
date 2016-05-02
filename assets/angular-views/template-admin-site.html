@@ -1,0 +1,21 @@
+<top-menu></top-menu>
+
+<div class="row">
+    <div class="small-10 column small-centered">
+        <div class="app-data-panel">
+            <h5>Site Data</h5>
+            <form ng-submit="updateSiteInfo()">
+                <div class="row collapse">
+                    <div class="small-9 columns">
+                        <label>
+                            <input type="text" ng-model="siteDataForm.name" name="text" placeholder="Site Name" required/>
+                        </label>
+                    </div>
+                    <div class="small-3 columns">
+                        <input class="button expanded" type="submit" id="submit" value="Submit" />
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

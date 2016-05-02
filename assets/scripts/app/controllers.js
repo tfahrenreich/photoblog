@@ -65,21 +65,8 @@ define([
 
         .controller("AdminCtrl", function($scope, $log, appData, messageService, photoService, collectionService){
             $scope.allCollections = collectionService.collections;
-            $scope.siteDataForm = {};
             $scope.photos = [];
 
-            $scope.updateSiteInfo = function(){
-                appData.setData($scope.siteDataForm).then(
-                    function(response){
-                        $scope.siteDataForm = {};
-                        $scope.$emit('refreshAppData');
-                        messageService.setMessage({type: 'success', message: 'Info Updated!'})
-                    },
-                    function(error){
-                        $log.debug(error)
-                    }
-                );
-            };
 
             $scope.lastPost = 0;
             $scope.loadPage = function(){
@@ -102,6 +89,17 @@ define([
                     }
                 );
             };
+        })
+
+        .controller('AdminSiteData', function($scope, $log, appData){
+            $scope.siteDataForm = {};
+
+            $scope.updateSiteInfo = function(){
+
+                appData.setData($scope.siteDataForm);
+                $scope.siteDataForm = {};
+            };
+
         })
 
         .controller("AdminCollectionCtrl", function($scope,$location, $log, collectionService, photoService, messageService){

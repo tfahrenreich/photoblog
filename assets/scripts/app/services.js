@@ -6,13 +6,20 @@ define([
     'app/app'
 ], function(services) {
     services
-        .factory('appData' , function ($http){
+        .factory('appData' , function ($http, $rootScope, $log, messageService){
             function getData(){
                 return $http.get('/api/site/info');
             }
 
             function setData(formData){
-                return $http.post('/api/site/set', formData);
+                return $http.post('/api/site/set', formData).then(
+                    function(response){
+                        $rootScope.$broadcast('refreshAppData');
+                        messageService.setMessage({type: 'success', message: 'Info Updated!'})
+                    },
+                    function(error){
+                        $log.debug(error)
+                    })
             }
 
             return {

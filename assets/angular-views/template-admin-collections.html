@@ -1,8 +1,5 @@
-<div class="row">
-    <div class="small-12 small-centered column">
-        <a href="/admin">Admin Home</a>
-    </div>
-</div>
+<top-menu></top-menu>
+
 <div class="row collections-admin">
     <div class="small-3 column">
         <div class="panel">
@@ -23,8 +20,8 @@
         <page-view></page-view>
     </div>
     <div class="small-3 column">
-        <div class="panel">
-            <h6>Add Photos to Collection</h6>
+        <div class="panel" ng-show="collection._id">
+            <h6>Add Photos to Collection<br><small>click title to add</small></h6>
             <collection-filter></collection-filter>
             <ul class="no-bullet">
                 <li ng-repeat="photo in allPhotos | collectionFilter: photoFilter:collection._id">
