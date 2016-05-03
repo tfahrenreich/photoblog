@@ -38,13 +38,25 @@ define([
                     }
                 }
             });
+            $routeProvider.when('/photo/:id', {
+                templateUrl: '/assets/angular-views/template-photo.html',
+                controller: 'PhotoCtrl',
+                resolve: {
+                    collections: function (collectionService) {
+                        return collectionService.loadCollections();
+                    },
+                    photo: function ($route, photoService) {
+                        return photoService.loadPhotos([$route.current.params.id]);
+                    }
+                }
+            });
             $routeProvider.when('/login', {
                 templateUrl: '/assets/angular-views/template-admin-login.html',
                 controller: 'AdminLoginCtrl'
             });
-            $routeProvider.when('/admin', {
-                templateUrl: '/assets/angular-views/template-admin-index.html',
-                controller: 'AdminCtrl',
+            $routeProvider.when('/catalog', {
+                templateUrl: '/assets/angular-views/template-catalog-view.html',
+                controller: 'catalogCtrl',
                 resolve: {
                     collections: function (collectionService) {
                         return collectionService.loadCollections();
@@ -54,18 +66,6 @@ define([
             $routeProvider.when('/admin/site', {
                 templateUrl: '/assets/angular-views/template-admin-site.html',
                 controller: 'AdminSiteData'
-            });
-            $routeProvider.when('/admin/edit-photo/:id', {
-                templateUrl: '/assets/angular-views/template-admin-photo.html',
-                controller: 'AdminPhotoCtrl',
-                resolve: {
-                    collections: function (collectionService) {
-                        return collectionService.loadCollections();
-                    },
-                    photo: function ($route, photoService) {
-                        return photoService.loadPhotos([$route.current.params.id]);
-                    }
-                }
             });
             $routeProvider.when('/admin/collections', {
                 templateUrl: '/assets/angular-views/template-admin-collections.html',
@@ -100,7 +100,7 @@ define([
         .run(function($log, $rootScope ,authService, $location, $routeParams){
             $rootScope.$on('$locationChangeStart', function() {
                 // Checks authorization for admin urls
-                if(String($location.path()).includes('/admin')) authService.check()
+                if(String($location.path()).includes('/admin')) authService.check();
                 scroll(0,0);
             });
             $log.debug('Angular : photoBlog init\'d');

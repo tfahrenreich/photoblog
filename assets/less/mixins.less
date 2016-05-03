@@ -1,6 +1,7 @@
 // COLORS
 @mute: #D9EFE9;
 @grey: #D4D4D4;
+@red: #A24350;
 @white: #FFFFFF;
 @dark: #0a0a0a;
 @dark-overlay: rgba(10, 10, 10, 0.5);
@@ -172,4 +173,22 @@
   -webkit-animation: @arguments;
   -moz-animation: @arguments;
   animation: @arguments;
+}
+
+.bubble-link(@text-color: @white; @pill-color: @highlight){
+  & *{.transition(ease .3s);}
+
+  &:hover,
+  &.selected{
+    cursor: pointer;
+    .preview-box.panel{
+      display: block
+    }
+    span{
+      .border-radius(1rem);
+      color: @text-color;
+      background: @pill-color;
+      padding: 0.2rem 0.6rem;;
+    }
+  }
 }

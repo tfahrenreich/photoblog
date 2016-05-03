@@ -1,12 +1,23 @@
-<div ng-repeat="photo in photos" class="row">
+<div ng-repeat="photo in photos" class="row photo">
     <div class="small-12 columns">
         <div class="post-container">
-            <a href="/">
+            <a ng-href="/photo/{{photo._id}}">
                 <span class="corner"></span>
+            </a>
+            <a ng-href="/photo/{{photo._id}}">
                 <h6 class="title">{{photo.title}}</h6>
                 <img src="{{photo.files.large}}">
-                <p class="date">Posted {{photo.date | isoDate}}</p>
             </a>
+            <div class="row">
+                <div class="small-6 columns">
+                    <a class="remove" ng-if="admin && collection" ng-click="removeFromCollection(photo, $index)" ><span>remove from {{collection.name}}</span></a>
+                </div>
+                <div class="small-6 columns">
+                    <a ng-href="/photo/{{photo._id}}">
+                        <p class="date">Posted {{photo.date | isoDate}}</p>
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
 </div>

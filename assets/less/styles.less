@@ -53,12 +53,6 @@ h1.title{
   }
 }
 
-.collections-admin{
-  .panel{
-    .panel(@background-color: @grey)
-  }
-}
-
 .image-list{
   .photo-container{
     .perspective();
@@ -107,6 +101,7 @@ h1.title{
 .photo-viewer{
   .panel{
     .panel(@background-color: @grey);
+
   }
 }
 
@@ -135,24 +130,19 @@ image-preview,
 image-preview,
 [image-preview],
 .collection-list li a{
-  & *{.transition(ease .3s);}
+  .bubble-link();
+}
 
-  &:hover,
-  &.selected{
-    cursor: pointer;
-    .preview-box.panel{
-      display: block
-    }
-    span{
-      .border-radius(1rem);
-      color: @white;
-      background: @highlight;
-      padding: 0.2rem 0.6rem;;
-    }
-  }
+.photo-collections li{
+ .bubble-link(@pill-color: @red);
+}
+
+.panel{
+  .panel(@background-color: @grey)
 }
 
 .post-container{
+  overflow: hidden;
   position: relative;
   .title{
     color: @white;
@@ -164,10 +154,21 @@ image-preview,
     color: @dark-overlay;
     text-transform: uppercase;
     padding: 0 0.8rem;
+    margin-bottom: 0;
     .transition();
     &:hover{
       color: @dark;
     }
+  }
+  .remove{
+    .header-font;
+    text-transform: uppercase;
+    color: @dark-overlay;
+    vertical-align: top;
+    font-size: .7rem;
+    line-height: 1.6rem;
+    padding: 0 0.8rem;
+    .bubble-link(@pill-color: @red);
   }
   .corner{
     border-color: @white @white transparent transparent;

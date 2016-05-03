@@ -50,7 +50,7 @@ router.post('/login', function(request, response) {
             if (username == usr.username && bcrypt.compareSync(password, usr.password)) {
                 request.session.regenerate(function() {
                     request.session.user = username;
-                    return response.send('Logged in as '+username);
+                    return response.send(username);
                 });
             } else {
                 return response.status(401).send("Bad Username or Password");

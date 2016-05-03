@@ -28,23 +28,46 @@ define([
             };
         })
 
-        .factory('authService' , function ($http){
+        .factory('authService' , function ($http, $cookies, $location, $rootScope, messageService, $log){
+            var service = {
+                user : false,
+                login : login,
+                logout : logout,
+                check : check
+            };
+
             function login(credentials) {
-                return $http.post('/api/user/login', credentials);
+                return $http.post('/api/user/login', credentials).then(
+                    function(response) {
+                        $cookies.loggedInUser = response.data;
+                        $location.path('/');
+                        service.user = response.data;
+                        $rootScope.$broadcast('login');
+                        messageService.setMessage({type:'success', message: response.data});
+                    },
+                    function(error) {
+                        messageService.setMessage({type:'alert', message: error.data});
+                        $log.log(error);
+                    })
             }
 
             function logout(){
                 return $http.get('/api/user/logout');
             }
+
             function check(){
-                return $http.get('/api/user/check');
+                return $http.get('/api/user/check').then(
+                    function(response){
+                        if(!service.user){
+                            service.user = response.data;
+                            messageService.setMessage({type:'success', message: response.data});
+                        }
+                        $rootScope.$broadcast('login');
+                    }
+                );
             }
 
-            return {
-                login : login,
-                logout : logout,
-                check : check
-            };
+            return service;
         })
 
         .factory('photoService', function ($http, $q, $rootScope, messageService){
@@ -54,7 +77,8 @@ define([
                     loadRange:loadRange,
                     addPhotoToCollection: addPhotoToCollection,
                     loadPhotos : loadPhotos,
-                    deletePhoto : deletePhoto
+                    deletePhoto : deletePhoto,
+                    removeCollection: removeCollection
                 };
 
             function loadRange(from, collection_id, override){
@@ -126,6 +150,21 @@ define([
                 var deferred = $q.defer();
 
                 return $http.post('/api/photos/add-collection', IDs).then(
+                    function(response){
+                        deferred.resolve(response.data);
+                        return deferred.promise;
+                    },
+                    function(error) {
+                        messageService.setMessage({type:"alert", message: error.data});
+                        return deferred.promise;
+                    }
+                )
+            }
+
+            function removeCollection(IDs){
+                var deferred = $q.defer();
+
+                return $http.post('/api/photos/remove-collection', IDs).then(
                     function(response){
                         deferred.resolve(response.data);
                         return deferred.promise;

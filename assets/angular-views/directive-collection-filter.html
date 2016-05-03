@@ -1,5 +1,5 @@
 <select ng-model="photoFilter" ng-init="photoFilter = 'false'">
     <option value="false">Filter by Collection</option>
-    <option value="notincollection">Not in a Collection</option>
+    <option ng-if="admin" value="notincollection">Not in a Collection</option>
     <option ng-repeat="collection in allCollections" ng-value="collection._id">{{collection.name}}</option>
 </select>

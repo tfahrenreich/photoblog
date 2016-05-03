@@ -1,9 +1,8 @@
-<top-menu></top-menu>
 <div class="row">
     <div class="small-10 column small-centered">
         <div class="row">
             <div class="small-12 small-centered column collection-menu">
-                    <collection-filter></collection-filter>
+                <collection-filter></collection-filter>
             </div>
         </div>
 
@@ -17,9 +16,14 @@
                                 <h6>{{photo.title}}</h6>
                             </div>
                             <div class="back">
-                                <div class="row collapse">
+                                <div class="row">
+                                    <div class="small-12 columns">
+                                        <h5><small>posted: <br>{{photo.date | isoDate}}</small></h5>
+                                    </div>
+                                </div>
+                                <div class="row collapse" ng-if="admin">
                                     <div class="small-6 column">
-                                        <a ng-href="/admin/edit-photo/{{photo._id}}" class="button tiny expanded">view/edit</a>
+                                        <a ng-href="/photo/{{photo._id}}" class="button tiny expanded">view/edit</a>
                                     </div>
                                     <div class="small-6 column">
                                         <a ng-href="#" class="button tiny expanded" ng-click="deletePhoto(photo)">Delete</a>

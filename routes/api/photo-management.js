@@ -140,6 +140,39 @@ router.post('/add-collection', sessionCheck, function(request, response){
     );
 });
 
+router.post('/remove-collection', function(request, response){
+    var collection_id = request.body.collection,
+        photo_id = request.body.photo,
+        res = {};
+
+    Photo.findByIdAndUpdate(
+        photo_id,
+        {
+            $pull: {collections: collection_id}
+        }, function(error, photo){
+            if(error){
+                res.error = error;
+                return response.status(500).send(error);
+            }
+            res.photo = photo;
+
+            Collection.findByIdAndUpdate(
+                collection_id,
+                {
+                    $pull: {photos: photo_id}
+                }, function(error, collection){
+                    if(error){
+                        res.error = error;
+                        return response.status(500).send(error);
+                    }
+                    res.collection = collection;
+                    return response.status(200).send(res)
+                }
+            );
+        }
+    );
+});
+
 router.get('/delete/:id', sessionCheck, function(request, response) {
     var id = request.params.id;
     Photo.remove({

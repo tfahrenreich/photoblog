@@ -6,7 +6,7 @@ define([
     'app/app'
 ], function(controllers){
     controllers
-        .controller("AppContainerCtrl", function($scope, $rootScope, $log, appData, messageService){
+        .controller("AppContainerCtrl", function($scope, $rootScope, $log, appData, messageService,authService){
             $scope.getData = function(){
                 appData.getData().then(
                     function(response){
@@ -21,6 +21,14 @@ define([
             $scope.$on('refreshAppData', function (){
                 $scope.getData();
             });
+
+            $scope.$on('login', function (){
+               $rootScope.admin = authService.user
+            });
+
+            $scope.login = function(){
+                authService.check();
+            };
 
             $scope.getData();
         })
@@ -49,24 +57,13 @@ define([
             };
 
             $scope.login = function(credentials) {
-                authService.login(credentials).then(
-                    function(response) {
-                        $cookies.loggedInUser = response.data;
-                        $location.path('/admin');
-                        messageService.setMessage({type:'success', message: response.data});
-
-                    },
-                    function(error) {
-                        messageService.setMessage({type:'alert', message: error.data});
-                        $log.log(error);
-                    });
+                authService.login(credentials);
             };
         })
 
-        .controller("AdminCtrl", function($scope, $log, appData, messageService, photoService, collectionService){
+        .controller("catalogCtrl", function($scope, $log, appData, messageService, photoService, collectionService, authService){
             $scope.allCollections = collectionService.collections;
             $scope.photos = [];
-
 
             $scope.lastPost = 0;
             $scope.loadPage = function(){
@@ -105,6 +102,7 @@ define([
         .controller("AdminCollectionCtrl", function($scope,$location, $log, collectionService, photoService, messageService){
             $scope.allCollections = collectionService.collections;
             $scope.collection = collectionService.populatedCollection;
+            $scope.admin = true;
 
             $scope.newCollection = {};
             $scope.allPhotos = [];
@@ -117,6 +115,28 @@ define([
                         $scope.allCollections.push(response.data);
                         $scope.newCollection = {};
                         $location.path('/admin/collections/'+response.data._id);
+                    },
+                    function(error){
+
+                    }
+                )
+            };
+
+            $scope.removeFromCollection = function(photo, index){
+                var photoKey = $scope.allPhotos.indexOf($scope.allPhotos.filter(function(obj){
+                    return obj._id === photo._id
+                })[0]);
+
+
+
+                photoService.removeCollection({
+                    photo: photo._id,
+                    collection: $scope.collection._id
+                }).then(
+                    function(response){
+                        $scope.photos.splice(index,1);
+
+                        if(photoKey > 0) $scope.allPhotos[photoKey].collections.splice($scope.allPhotos[photoKey].collections.indexOf($scope.collection._id), 1);
                     },
                     function(error){
 
@@ -161,7 +181,7 @@ define([
             }
         })
 
-        .controller("AdminPhotoCtrl", function($scope, $log, photoService, messageService, $routeParams, collectionService){
+        .controller("PhotoCtrl", function($scope, $log, photoService, messageService, $routeParams, collectionService){
             $scope.photo = photoService.photos[0];
             $scope.collections = collectionService.collections;
 
@@ -172,6 +192,20 @@ define([
                 }).then(
                     function(response){
                         $scope.photo.collections.push(response.collection)
+                    },
+                    function(error){
+
+                    }
+                )
+            };
+
+            $scope.removeCollection = function(collection, index){
+                photoService.removeCollection({
+                    photo: $scope.photo._id,
+                    collection: collection._id
+                }).then(
+                    function(response){
+                        $scope.photo.collections.splice(index,1)
                     },
                     function(error){
 

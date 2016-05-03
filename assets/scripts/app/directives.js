@@ -74,12 +74,6 @@ define([
                 }
             }
         })
-        .directive('collectionView', function(){
-            return{
-                restrict: 'E',
-                templateUrl: '/assets/angular-views/directive-view-collection.html'
-            }
-        })
         .directive('topMenu', function(){
             return{
                 restrict: 'E',
