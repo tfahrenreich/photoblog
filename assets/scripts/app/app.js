@@ -98,6 +98,7 @@ define([
             $locationProvider.html5Mode(true);
         })
         .run(function($log, $rootScope ,authService, $location, $routeParams){
+            $rootScope.appData = {};
             $rootScope.$on('$locationChangeStart', function() {
                 // Checks authorization for admin urls
                 if(String($location.path()).includes('/admin')) authService.check();

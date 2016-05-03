@@ -68,7 +68,9 @@ router.post('/add', sessionCheck, imageUpload, function(request, response){
         var file = request.files[i];
 
         var photo = new Photo({
+            title: request.body.title,
             date: new Date(Date.now()),
+            collections: [request.body.collection],
             files: {
                 actual: file.path,
                 original: "/assets/images/uploaded/"+file.filename,
@@ -79,6 +81,7 @@ router.post('/add', sessionCheck, imageUpload, function(request, response){
                 huge: "/assets/images/uploaded/"+file.filename+"_huge"
             }
         });
+
         photos.push(photo);
 
         photo.save(function(err) {

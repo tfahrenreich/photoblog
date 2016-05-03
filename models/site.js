@@ -7,8 +7,15 @@ var Schema = mongoose.Schema;
 
 var SiteSchema = new Schema({
     _id: String,
-    name: String,
-    date: Date
+    name: {
+        type: String,
+        default: "PhotoBlog CMS"
+    },
+    date: Date,
+    postsPerPage: {
+        type: Number,
+        default: 5
+    }
 },{
     collection: 'data'}
 );

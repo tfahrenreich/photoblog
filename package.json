@@ -4,6 +4,7 @@
   "description": "Photo blog framework",
   "main": "index.js",
   "scripts": {
+    "install": "node ./modules/install.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prestart": "lessc assets/less/styles.less assets/less/compiled/styles.css",
     "start": "node index.js"
