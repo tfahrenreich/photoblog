@@ -18,6 +18,9 @@ define([
                     });
             };
 
+            $rootScope.admin = authService.user;
+
+
             $scope.$on('refreshAppData', function (){
                 $scope.getData();
             });
@@ -79,13 +82,46 @@ define([
                 photoService.deletePhoto(photo._id).then(
                     function(response){
                         messageService.setMessage({type:'warning', message: photo.title+" deleted"});
-                        $scope.allPhotos.splice($scope.allPhotos.indexOf(photo), 1)
+                        $scope.photos.splice($scope.photos.indexOf(photo), 1)
                     },
                     function(error){
                         $log.error(error)
                     }
                 );
             };
+        })
+
+        .controller("PhotoCtrl", function($scope, $log, photoService, messageService, $routeParams, collectionService){
+            $scope.photo = photoService.photos[0];
+            $scope.collections = collectionService.collections;
+
+            $scope.addToCollection = function(collectionID){
+                photoService.addPhotoToCollection({
+                    photo: $scope.photo._id,
+                    collection: collectionID
+                }).then(
+                    function(response){
+                        $scope.photo.collections.push(response.collection)
+                    },
+                    function(error){
+
+                    }
+                )
+            };
+
+            $scope.removeCollection = function(collection, index){
+                photoService.removeCollection({
+                    photo: $scope.photo._id,
+                    collection: collection._id
+                }).then(
+                    function(response){
+                        $scope.photo.collections.splice(index,1)
+                    },
+                    function(error){
+
+                    }
+                )
+            }
         })
 
         .controller('AdminSiteData', function($scope, $log, appData){
@@ -181,36 +217,4 @@ define([
             }
         })
 
-        .controller("PhotoCtrl", function($scope, $log, photoService, messageService, $routeParams, collectionService){
-            $scope.photo = photoService.photos[0];
-            $scope.collections = collectionService.collections;
-
-            $scope.addToCollection = function(collectionID){
-                photoService.addPhotoToCollection({
-                    photo: $scope.photo._id,
-                    collection: collectionID
-                }).then(
-                    function(response){
-                        $scope.photo.collections.push(response.collection)
-                    },
-                    function(error){
-
-                    }
-                )
-            };
-
-            $scope.removeCollection = function(collection, index){
-                photoService.removeCollection({
-                    photo: $scope.photo._id,
-                    collection: collection._id
-                }).then(
-                    function(response){
-                        $scope.photo.collections.splice(index,1)
-                    },
-                    function(error){
-
-                    }
-                )
-            }
-        })
 });

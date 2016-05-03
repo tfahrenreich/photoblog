@@ -70,7 +70,7 @@ router.post('/add', sessionCheck, imageUpload, function(request, response){
         var photo = new Photo({
             title: request.body.title,
             date: new Date(Date.now()),
-            collections: [request.body.collection],
+            collections: [],
             files: {
                 actual: file.path,
                 original: "/assets/images/uploaded/"+file.filename,
@@ -82,15 +82,19 @@ router.post('/add', sessionCheck, imageUpload, function(request, response){
             }
         });
 
+        if(request.body.collection) photo.collections.push(request.body.collection);
+
         photos.push(photo);
 
         photo.save(function(err) {
             if(err) photos.pop().push(err);
         });
     }
-    photoLab.processImage(photos);
 
-    return response.status(200).send(photos);
+    photoLab.processImage(photos, function(){
+        return response.status(200).send(photos);
+    });
+
 });
 
 router.post('/update/:id', sessionCheck, function(request, response) {
