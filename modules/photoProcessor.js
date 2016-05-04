@@ -14,7 +14,6 @@ module.exports = {
 function processImages(photos, callback, i){
     i = i || 0;
     orientPhoto(photos[i].files.actual, function(){
-        console.log(i);
         i++;
         if(i < photos.length){
             processImages(photos, callback, i)

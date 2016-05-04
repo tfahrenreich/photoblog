@@ -100,8 +100,8 @@ define([
         .run(function($log, $rootScope ,authService, $location, $routeParams){
             $rootScope.appData = {};
             $rootScope.$on('$locationChangeStart', function() {
-                // Checks authorization for admin urls
-                if(String($location.path()).includes('/admin')) authService.check();
+                // Checks authorization for admin urls - disabled to show off admin areas
+                //if(String($location.path()).includes('/admin')) authService.check();
                 scroll(0,0);
             });
             $log.debug('Angular : photoBlog init\'d');
