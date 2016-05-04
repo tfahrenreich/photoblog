@@ -10,7 +10,7 @@
             </a>
             <div class="row">
                 <div class="small-6 columns">
-                    <a class="remove" ng-if="admin && collection" ng-click="removeFromCollection(photo, $index)" ><span>remove from {{collection.name}}</span></a>
+                    <a class="remove" ng-if="collection" ng-click="removeFromCollection(photo, $index)" ><span>remove from {{collection.name}}</span></a>
                 </div>
                 <div class="small-6 columns">
                     <a ng-href="/photo/{{photo._id}}">
