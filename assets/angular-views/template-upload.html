@@ -1,0 +1,50 @@
+<div class="row">
+    <div class="small-10 small-centered column">
+        <h3>Upload Photos</h3>
+    </div>
+</div>
+<div class="row" ng-if="uploadForm.files.length > 0">
+    <div class="small-10 small-centered columns">
+        <div ng-repeat="file in uploadForm.files" class="upload-preview-item">
+            <div class="row">
+                <div class="small-3 column">
+                    <div upload-preview file='file' ></div>
+                </div>
+                <div class="small-9 column">
+                    <h6>{{file.name}}</h6>
+                    <label>
+                        Title
+                        <input ng-model="file.title" type="text" placeholder="untitled" maxlength="70">
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="small-5 small-centered columns">
+        <div class="panel">
+            <form ng-submit="upload()">
+                <div class="row">
+                    <div class="small-12 columns">
+                        <button class="file-upload button expanded" ng-class="{alert : !(uploadForm.files.length > 0), success:(uploadForm.files.length > 0)}">
+                            <span>{{uploadForm.files.length||0}} Files Selected</span>
+                            <input type="file" upload-form="uploadForm.files" multiple>
+                        </button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="small-12 column">
+                        <label>Upload to collection
+                            <select ng-model="uploadForm.collection" ng-init="uploadForm.collection = 'false'">
+                                <option value="false">None</option>
+                                <option ng-repeat="collection in allCollections" ng-value="collection._id">{{collection.name}}</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+                <input class="button expanded" type="submit" ng-show="uploadForm.files[0]">
+            </form>
+        </div>
+    </div>
+</div>

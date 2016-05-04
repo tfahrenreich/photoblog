@@ -6,7 +6,7 @@
             <div class="small-4 column">
                 <div class="panel">
                     <h6>collections</h6>
-                    <input collection-auto-complete ui-items="collections" type="text">
+                    <input collection-auto-complete ui-items="collections" type="text" placeholder="Add to collection...">
                     <h6 ng-show="photo.collections.length > 0"><small>click to remove</small></h6>
                     <ul class="no-bullet photo-collections">
                         <li ng-repeat="collection in photo.collections" ng-click="removeCollection(collection, $index)">

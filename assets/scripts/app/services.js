@@ -43,7 +43,7 @@ define([
                         $location.path('/');
                         service.user = response.data;
                         $rootScope.$broadcast('login');
-                        messageService.setMessage({type:'success', message: response.data});
+                        messageService.setMessage({type:'success', message: 'Sign in as '+response.data});
                     },
                     function(error) {
                         messageService.setMessage({type:'alert', message: error.data});
@@ -60,7 +60,7 @@ define([
                     function(response){
                         if(!service.user){
                             service.user = response.data;
-                            messageService.setMessage({type:'success', message: response.data});
+                            messageService.setMessage({type:'success', message: 'Sign in as '+response.data});
                         }
                         $rootScope.$broadcast('login');
                     }
@@ -70,7 +70,7 @@ define([
             return service;
         })
 
-        .factory('photoService', function ($http, $q, $rootScope, messageService){
+        .factory('photoService', function ($http, $q, $rootScope, messageService, $location){
             var parameters, 
                 service = {
                     photos: [],
@@ -78,7 +78,8 @@ define([
                     addPhotoToCollection: addPhotoToCollection,
                     loadPhotos : loadPhotos,
                     deletePhoto : deletePhoto,
-                    removeCollection: removeCollection
+                    removeCollection: removeCollection,
+                    uploadPhotos: uploadPhotos
                 };
 
             function loadRange(from, collection_id, override){
@@ -174,6 +175,40 @@ define([
                         return deferred.promise;
                     }
                 )
+            }
+
+            function uploadPhotos(uploadForm){
+
+                $rootScope.$broadcast('uploading');
+
+                var fd = new FormData();
+
+                uploadForm.files.forEach(function(file){
+                    fd.append('titles[]', file.title);
+                    fd.append('photos', file)
+                });
+
+                if(uploadForm.collection !== "false")fd.append('collection', uploadForm.collection);
+
+                var deferred = $q.defer();
+                return $http({
+                    method: 'POST',
+                    url: '/api/photos/add',
+                    headers: {'Content-Type': undefined},
+                    arrayKey: '', // default is '[i]'
+                    data: fd
+                }).then(function(response){
+                    $rootScope.$broadcast('doneUploading');
+                    $location.path('/catalog');
+                    deferred.resolve(response.data);
+                    return deferred.promise;
+                },
+                function(error) {
+                    messageService.setMessage({type:"alert", message: error.data});
+                    $rootScope.$broadcast('doneUploading');
+                    deferred.reject(error.data);
+                    return deferred.promise;
+                })
             }
 
             return service;

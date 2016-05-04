@@ -92,6 +92,15 @@ define([
                     }
                 }
             });
+            $routeProvider.when('/admin/upload', {
+                templateUrl: '/assets/angular-views/template-upload.html',
+                controller: 'AdminUploadCtrl',
+                resolve: {
+                    collections: function (collectionService) {
+                        return collectionService.loadCollections();
+                    }
+                }
+            });
             $routeProvider.otherwise({
                 redirectTo: '/'
             });

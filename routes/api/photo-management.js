@@ -60,15 +60,13 @@ router.get('/page', function(request, response){
 /** PROTECTED ROUTES */
 
 router.post('/add', sessionCheck, imageUpload, function(request, response){
+    // creates all database entries for photos at once. Starts processing for photos, one at a time. sends response after processing is done
     var photos = [], i;
-
-    //todo make a job queue && make wait for process to finish. probably with a manual recursive loop
-
     for(i=0; i < request.files.length; i++){
         var file = request.files[i];
-
+        if(request.body.titles[i] !== 'undefined')var title = request.body.titles[i];
         var photo = new Photo({
-            title: request.body.title,
+            title: title,
             date: new Date(Date.now()),
             collections: [],
             files: {
@@ -82,7 +80,7 @@ router.post('/add', sessionCheck, imageUpload, function(request, response){
             }
         });
 
-        if(request.body.collection) photo.collections.push(request.body.collection);
+        if(request.body.collection)photo.collections.push(request.body.collection);
 
         photos.push(photo);
 

@@ -26,7 +26,20 @@ define([
                 templateUrl: '/assets/angular-views/directive-message-service.html'
             }
         })
-        .directive('collectionAutoComplete', function($timeout) {
+        .directive('loadingModal', function(){
+            return{
+                templateUrl: '/assets/angular-views/directive-loading-modal.html',
+                controller: function($scope){
+                    $scope.$on('uploading', function(){
+                        $("#loading-modal").fadeIn();
+                    });
+                    $scope.$on('doneUploading', function(){
+                        $("#loading-modal").fadeOut();
+                    })
+                }
+            }
+        })
+        .directive('collectionAutoComplete', function() {
             return function($scope, element, attrs) {
                 $(element).autocomplete({
                     source: $scope[attrs.uiItems],
@@ -91,5 +104,39 @@ define([
                 restrict: 'E',
                 templateUrl: '/assets/angular-views/directive-collection-filter.html'
             }
-        });
+        })
+        .directive('uploadForm', function($parse){
+            return {
+                restrict: 'A',
+                link: function($scope, element, attrs) {
+                    var model = $parse(attrs.uploadForm);
+                    var modelSetter = model.assign;
+
+                    element.bind('change', function(){
+                        $scope.$apply(function(){
+                            var photos = $.map(element[0].files, function(value) {
+                                return [value];
+                            });
+
+                            modelSetter($scope, photos);
+                        });
+                    });
+                }
+            };
+        })
+        .directive('uploadPreview', function($parse){
+            return{
+                restrict: 'A',
+                scope: {file: '='},
+                link: function($scope, elem){
+                    var reader = new FileReader();
+
+                    reader.addEventListener("loadend", function () {
+                        $(elem[0]).html("<img src='"+reader.result+"'>")
+                    }, false);
+
+                    reader.readAsDataURL($scope.file)
+                }
+            };
+        })
 });

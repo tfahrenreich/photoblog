@@ -9,7 +9,7 @@ html(ng-controller="AppContainerCtrl")
         title {{appData.name}}
         base(href="/")
     body(ng-cloak)
-
+        div(loading-modal, id="loading-modal")
         div(class="row")
             div(class="small-12 columns")
                 h1(class='title')

@@ -163,8 +163,6 @@ define([
                     return obj._id === photo._id
                 })[0]);
 
-
-
                 photoService.removeCollection({
                     photo: photo._id,
                     collection: $scope.collection._id
@@ -178,6 +176,21 @@ define([
 
                     }
                 )
+            };
+
+            $scope.addToCollection = function(photo){
+                photoService.addPhotoToCollection({
+                    photo: photo._id,
+                    collection: $scope.collection._id
+                }).then(function(response){
+                    //create pseudo collection obj
+                    var collection = {_id: $scope.collection._id };
+                    photo.collections.push(collection);
+                    $scope.collection.photos.push(photo._id);
+                    $scope.photos.unshift(photo)
+                },function(error){
+
+                });
             };
 
             $scope.lastPost = 0;
@@ -199,22 +212,14 @@ define([
                     });
             };
             if($scope.collection._id)$scope.loadAllPage();
-
-            $scope.addToCollection = function(photo){
-                photoService.addPhotoToCollection({
-                    photo: photo._id,
-                    collection: $scope.collection._id
-                }).then(function(response){
-                    //create pseudo collection obj
-                    var collection = {_id: $scope.collection._id };
-                    photo.collections.push(collection);
-                    $scope.collection.photos.push(photo._id);
-                    $scope.photos.push(photo)
-                },function(error){
-
-                });
-
-            }
         })
 
+        .controller("AdminUploadCtrl", function($scope,$location, $log, collectionService, photoService){
+            $scope.uploadForm = {};
+            $scope.allCollections = collectionService.collections;
+
+            $scope.upload = function(){
+                photoService.uploadPhotos($scope.uploadForm)
+            }
+        });
 });

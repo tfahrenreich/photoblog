@@ -4,7 +4,8 @@
             <li><a href="/catalog">Catalog View</a></li>
             <li><a href="/admin/site">Site Settings</a></li>
             <li><a href="/admin/collections">Edit Collections</a></li>
-            <li><a href="#" ng-click="login()">Login</a></li>
+            <li><a href="/admin/upload">Upload</a></li>
+            <li ng-if="!admin"><a href="#" ng-click="login()">Login</a></li>
         </ul>
     </div>
 </div>
