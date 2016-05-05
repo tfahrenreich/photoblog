@@ -71,8 +71,7 @@ define([
         })
 
         .factory('photoService', function ($http, $q, $rootScope, messageService, $location){
-            var parameters, 
-                service = {
+            var service = {
                     photos: [],
                     loadRange:loadRange,
                     addPhotoToCollection: addPhotoToCollection,
@@ -178,37 +177,41 @@ define([
             }
 
             function uploadPhotos(uploadForm){
+                var photos = uploadForm.files,
+                    i = 0;
 
-                $rootScope.$broadcast('uploading');
+                function photoLoop(photos){
+                    uploadPhoto(photos[i], function(){
+                        i++;
+                        if(i < photos.length){
+                            photoLoop(photos)
+                        }else{
+                            $rootScope.$broadcast('doneUploading');
+                            $location.path('/catalog');
+                        }
+                    })
+                }
 
-                var fd = new FormData();
+                photoLoop(photos);
 
-                uploadForm.files.forEach(function(file){
-                    fd.append('titles[]', file.title);
-                    fd.append('photos', file)
-                });
+                function uploadPhoto(photo, callback){
+                    $rootScope.$broadcast('uploading', { progress: Math.floor(((i)/photos.length)*100)});
+                    var fd = new FormData();
 
-                if(uploadForm.collection !== "false")fd.append('collection', uploadForm.collection);
+                    fd.append('titles[]', photo.title);
+                    fd.append('photos', photo);
+                    if(uploadForm.collection !== "false")fd.append('collection', uploadForm.collection);
 
-                var deferred = $q.defer();
-                return $http({
-                    method: 'POST',
-                    url: '/api/photos/add',
-                    headers: {'Content-Type': undefined},
-                    arrayKey: '', // default is '[i]'
-                    data: fd
-                }).then(function(response){
-                    $rootScope.$broadcast('doneUploading');
-                    $location.path('/catalog');
-                    deferred.resolve(response.data);
-                    return deferred.promise;
-                },
-                function(error) {
-                    messageService.setMessage({type:"alert", message: error.data});
-                    $rootScope.$broadcast('doneUploading');
-                    deferred.reject(error.data);
-                    return deferred.promise;
-                })
+                    $http({
+                        method: 'POST',
+                        url: '/api/photos/add',
+                        headers: {'Content-Type': undefined},
+                        arrayKey: '', // default is '[i]'
+                        data: fd
+                    }).then(function(response){
+                        callback()
+                    })
+                }
             }
 
             return service;

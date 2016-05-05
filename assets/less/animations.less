@@ -45,3 +45,22 @@
     .animation(exit-view 1s);
   }
 }
+
+.loading-spinner{
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  border: 0.25rem solid #344D63;
+  border-top-color: #2199e8;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -50px;
+  margin-top: -50px;
+  .keyframes(spinner;{
+    0% { .transform(rotate(0deg)); .opacity(0.5)}
+    50% {.transform(rotate(180deg)); .opacity(1)}
+    100% {.transform(rotate(360deg)); .opacity(0.5)}
+  });
+  .animation(spinner; @duration: 1s; @delay: infinite ;@ease: linear; );
+}

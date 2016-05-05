@@ -30,11 +30,11 @@ define([
             return{
                 templateUrl: '/assets/angular-views/directive-loading-modal.html',
                 controller: function($scope){
-                    $scope.$on('uploading', function(){
-                        $("#loading-modal").fadeIn();
+                    $scope.$on('uploading', function(event, args){
+                        $("#loading-modal").fadeIn().find(".percentage").html(args.progress);
                     });
                     $scope.$on('doneUploading', function(){
-                        $("#loading-modal").fadeOut();
+                        $("#loading-modal").fadeOut().find(".percentage").html(100);
                     })
                 }
             }

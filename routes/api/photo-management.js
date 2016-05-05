@@ -60,11 +60,13 @@ router.get('/page', function(request, response){
 /** PROTECTED ROUTES */
 
 router.post('/add', sessionCheck, imageUpload, function(request, response){
-    // creates all database entries for photos at once. Starts processing for photos, one at a time. sends response after processing is done
+    // creates all database entries for photos at once. Starts processing for photos, one at a time.
+    // sends response after processing is done. queuing will happen on client side, but nice to have a fail-safe.
+
     var photos = [], i;
     for(i=0; i < request.files.length; i++){
         var file = request.files[i];
-        if(request.body.titles[i] !== 'undefined')var title = request.body.titles[i];
+        var title = (request.body.titles[i] !== 'undefined') ? request.body.titles[i] : "Untitled";
         var photo = new Photo({
             title: title,
             date: new Date(Date.now()),
