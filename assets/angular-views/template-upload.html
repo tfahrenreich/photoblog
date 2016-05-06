@@ -29,7 +29,7 @@
                     <div class="small-12 columns">
                         <button class="file-upload button expanded" ng-class="{alert : !(uploadForm.files.length > 0), success:(uploadForm.files.length > 0)}">
                             <span>{{uploadForm.files.length||0}} Files Selected</span>
-                            <input type="file" upload-form="uploadForm.files" multiple>
+                            <input type="file" upload-form="uploadForm.files" multiple accept="image/png, image/jpeg">
                         </button>
                     </div>
                 </div>

@@ -82,7 +82,14 @@ define([
                 photoService.deletePhoto(photo._id).then(
                     function(response){
                         messageService.setMessage({type:'warning', message: photo.title+" deleted"});
-                        $scope.photos.splice($scope.photos.indexOf(photo), 1)
+                        $scope.photos.splice($scope.photos.indexOf(photo), 1);
+                        $scope.lastPost--;
+
+                        photoService.loadRange($scope.lastPost, null, 1).then(
+                            function(response){
+                                $scope.lastPost = response.startFrom;
+                                $scope.photos = $scope.photos.concat(response.photos)
+                            });
                     },
                     function(error){
                         $log.error(error)
