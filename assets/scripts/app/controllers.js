@@ -53,7 +53,7 @@ define([
             $scope.loadPage()
         })
 
-        .controller("AdminLoginCtrl", function($scope, $location, $cookies, authService, $log, messageService){
+        .controller("AdminLoginCtrl", function($scope, $location, $cookies, authService){
             $scope.credentials = {
                 username: '',
                 password: ''
@@ -64,7 +64,7 @@ define([
             };
         })
 
-        .controller("catalogCtrl", function($scope, $log, appData, messageService, photoService, collectionService, authService){
+        .controller("catalogCtrl", function($scope, $log, appData, messageService, photoService, collectionService){
             $scope.allCollections = collectionService.collections;
             $scope.photos = [];
 
@@ -83,11 +83,9 @@ define([
                     function(response){
                         messageService.setMessage({type:'warning', message: photo.title+" deleted"});
                         $scope.photos.splice($scope.photos.indexOf(photo), 1);
-                        $scope.lastPost--;
 
-                        photoService.loadRange($scope.lastPost, null, 1).then(
+                        photoService.loadRange(($scope.lastPost-1), null, 1).then(
                             function(response){
-                                $scope.lastPost = response.startFrom;
                                 $scope.photos = $scope.photos.concat(response.photos)
                             });
                     },

@@ -109,17 +109,25 @@ define([
             return {
                 restrict: 'A',
                 link: function($scope, element, attrs) {
-                    var model = $parse(attrs.uploadForm);
-                    var modelSetter = model.assign;
 
                     element.bind('change', function(){
                         $scope.$apply(function(){
+
+                            var files = $parse(attrs.uploadForm)($scope);
+
+                            if (!Array.isArray(files)) {
+                                files = [];
+                                $parse(attrs.uploadForm).assign($scope, files);
+                            }
+
                             var photos = $.map(element[0].files, function(value) {
-                                return [value];
+                                return value;
                             });
 
-                            modelSetter($scope, photos);
-                        });
+                            photos.forEach(function(obj){
+                                files.push(obj)
+                            })
+                        })
                     });
                 }
             };
